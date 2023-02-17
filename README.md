@@ -20,7 +20,7 @@ The science behind this work can be found with a similar work: https://www.bior
 
 Files and their functions
 
-|File|Description
+|File|Description|
 
 | --- | --- |
 	
