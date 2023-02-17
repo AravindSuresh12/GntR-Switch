@@ -1,4 +1,4 @@
-This is a systems biology ML model which predicts responses for gene regulation in a genetic circuit. This mechanistic model predicts the transcriptional and translational dynamics present in the circuit.
+This is a Systems Biology ML model which predicts the response of a genetic full switch circuit to various gluconate concentrations . This mechanistic model predicts the transcriptional and translational dynamics of multiple genes in a cell free system. 
 
 WORK UNDER PROGRESS...
 
