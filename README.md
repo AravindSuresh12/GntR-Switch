@@ -21,8 +21,10 @@ The science behind this work can be found with a similar work: https://www.bior
 Files and their functions
 
 |File|Description|	
-|parameter_estimation_W_splined.jl|Solves the model equations for the ensemble of parameters sets for the test case, 10mM gluconate. Saves solutions in the poets_ensemble_W_test directory.|
 | --- | --- |
+|parameter_estimation_W_splined.jl|Solves the model equations for the ensemble of parameters sets for the test case, 10mM gluconate. Saves solutions in the poets_ensemble_W_test directory.|
+|Driver.jl|runs the simulated solution of ODEs present in the model.|
+
 
 Driver.jl- runs the simulated solution of ODEs present in the model.
 
