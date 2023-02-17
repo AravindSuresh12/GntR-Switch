@@ -1,6 +1,6 @@
 This is a Systems Biology ML model which predicts the response of a genetic full switch circuit to various gluconate concentrations . This mechanistic model predicts the transcriptional and translational dynamics of multiple genes in a cell free system. 
 
-WORK UNDER PROGRESS...
+****WORK UNDER PROGRESS...
 
 
 You can download this repository as a zip file, or clone or pull it by using the command (from the command-line):
