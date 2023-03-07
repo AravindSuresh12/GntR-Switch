@@ -165,8 +165,8 @@ function objective_function(parameter_guess_array,time_start,time_step_size,time
 	 tsim_exp_protein = exp_data_dictionary["prot_data_array"][:,1]
 
     # # Venus mRNA -
-    # itp_Venus_mRNA =  Interpolations.LinearInterpolation(TSIM, (1000)*XSIM[:,5]);
-    # mRNA_Venus_sim = itp_Venus_mRNA[tsim_exp_protein]  # convert to muM from nM
+    itp_Venus_mRNA =  Interpolations.LinearInterpolation(TSIM, (1000)*XSIM[:,9]);
+    mRNA_Venus_sim = itp_Venus_mRNA[tsim_exp_protein]  # convert to muM from nM
 
 	# tsim_exp_mRNA = exp_data_dictionary["mRNA_data_array"][:,1]
 
@@ -175,7 +175,7 @@ function objective_function(parameter_guess_array,time_start,time_step_size,time
 	# # mRNA_GntR_sim = itp_GntR_mRNA[tsim_exp_mRNA]  # convert to muM from nM
     # mRNA_GntR_sim = itp_GntR_mRNA[tsim_exp_protein]  # convert to muM from nM
 
-    #Doing simulations for all 5 protein formations
+    #Doing simulations for all 5 protein formations- however not all of them are not used in error functions 
 
     # GntR
 
@@ -203,8 +203,8 @@ function objective_function(parameter_guess_array,time_start,time_step_size,time
     protein_BFP_sim = itp_BFP_protein[tsim_exp_protein]
 
     # # get experimental data Venus-
-    # mRNA_Venus_exp = exp_data_dictionary["mRNA_data_array"][:,2]          # mean is col 2 nM
-	# mRNA_Venus_std_exp = exp_data_dictionary["mRNA_data_array"][:,3]      # stdev is col 3 nM
+         mRNA_Venus_exp = exp_data_dictionary["mRNA_data_array"][:,2]          # mean is col 2 nM
+	 mRNA_Venus_std_exp = exp_data_dictionary["mRNA_data_array"][:,3]      # stdev is col 3 nM
 
     #only for BFP and Venus do we have experimental data
 
@@ -229,7 +229,7 @@ function objective_function(parameter_guess_array,time_start,time_step_size,time
 	# mRNA_Venus_exp = B.(tsim_exp_protein)
 
     #  compute error terms -
-    error_term_array = zeros(5,1) 
+    error_term_array = zeros(3,1) 
     # # error_term_array = zeros(4,1)
 
     # # mRNA Venus -
@@ -238,10 +238,11 @@ function objective_function(parameter_guess_array,time_start,time_step_size,time
     # # W_mRNA = transpose([0.001,100,1,1000,100])
     # # error_vector_1 = W_mRNA * (mRNA_Venus_exp .- mRNA_Venus_sim)
 	
+	error_vector_1 = mRNA_Venus_exp .- mRNA_Venus_sim
+	
     # # error_vector_1a = ((mRNA_Venus_exp.-minimum(mRNA_Venus_exp))./(maximum(mRNA_Venus_exp).-minimum(mRNA_Venus_exp))) .- ((mRNA_Venus_sim.-minimum(mRNA_Venus_sim))./(maximum(mRNA_Venus_sim).-minimum(mRNA_Venus_sim)))
     # # error_vector_1b = (maximum(mRNA_Venus_exp).-maximum(mRNA_Venus_sim))./(maximum(mRNA_Venus_exp))
     # # error_term_array[1] = 100*(transpose(error_vector_1a)*error_vector_1a + transpose(error_vector_1b)*error_vector_1b)
-    # error_vector_1 = mRNA_Venus_exp .- mRNA_Venus_sim
     # error_term_array[1] = (transpose(error_vector_1)*error_vector_1)
 
 
@@ -256,21 +257,21 @@ function objective_function(parameter_guess_array,time_start,time_step_size,time
     W_prot2 = diagm(tmp_arr2)
 
 
-    error_vector_1= protein_Venus_exp .- protein_GntR_sim
-    error_vector_2= protein_Venus_exp .- protein_S28_sim
-    error_vector_3= protein_Venus_exp .- protein_AS28_sim
-    error_vector_4 = protein_Venus_exp .- protein_Venus_sim
-    error_vector_5 = protein_BFP_exp .- protein_BFP_sim
+    #error_vector_1= protein_Venus_exp .- protein_GntR_sim
+    #error_vector_2= protein_Venus_exp .- protein_S28_sim
+    #error_vector_3= protein_Venus_exp .- protein_AS28_sim
+    error_vector_2 = protein_Venus_exp .- protein_Venus_sim
+    error_vector_3 = protein_BFP_exp .- protein_BFP_sim
 
 
 
    
     # error_term_array[2] = transpose(error_vector_2a)*error_vector_2a + transpose(error_vector_2b)*error_vector_2b this includes mRNA also- for now im not doin it- the product takes care of the square 
-    error_term_array[1] = transpose(error_vector_1)*error_vector_1 #is this even allowed lol
+    error_term_array[1] = transpose(error_vector_1)*error_vector_1 
     error_term_array[2] = transpose(error_vector_2)*error_vector_2
     error_term_array[3] = transpose(error_vector_3)*error_vector_3
-    error_term_array[4] = transpose(error_vector_4)*error_vector_4
-    error_term_array[5] = transpose(error_vector_5)*error_vector_5
+    #error_term_array[4] = transpose(error_vector_4)*error_vector_4
+    #error_term_array[5] = transpose(error_vector_5)*error_vector_5
 
 	
     # # #create fake GntR protein data = venus protein data
@@ -318,7 +319,7 @@ function local_refinement_step(path_to_data_dir, parameter_array; sigma=0.05, it
     path_to_biophysical_constants_file = "./CellFree.json"
 
 #     # wght array -  #what does this array do?
-    W = diagm(ones(5)) #this is needed for making it one by one
+    W = diagm(ones(3)) #this is needed for making it one by one- number of objective determines size of W
 
 
 #     # Load the data dictionary (uses the default biophysical_constants file)
