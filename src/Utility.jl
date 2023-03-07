@@ -577,9 +577,6 @@ function load_experimental_data_dictionary(base_path::String)
   stdev_Venus = full_data_table1[!,"sd_10mM"]
   prot_data_array1 = [T1 mean_Venus stdev_Venus]
 
-
-
-
   #for BFP
 
   full_data_table_path2 = "$(base_path)/data/Protein_data_BFP.csv" #for BFP
@@ -594,19 +591,19 @@ function load_experimental_data_dictionary(base_path::String)
  
   # #load_mrna data
 
-  # full_data_table_path = "$(base_path)/mRNA_data.csv"
-  # full_data_table = CSV.read(full_data_table_path,DataFrame)
+  full_data_table_path3 = "$(base_path)/mRNA-Venus.csv"
+  full_data_table3 = CSV.read(full_data_table_path,DataFrame)
 
   # # mRNA -
-  # T = full_data_table[!,"Avg Time (hr)"]
-  # mean_mRNA = full_data_table[!,"<VVOE + GntR_Ecoli + Gluconate>"]
-  # stdev_mRNA = full_data_table[!,"SD1"]
-  # mean_mRNA_gntr = full_data_table[!,"GntR1"]
-  # stdev_mRNA_gntr = full_data_table[!,"SD_1"]
-  # mRNA_data_array = [T mean_mRNA stdev_mRNA mean_mRNA_gntr stdev_mRNA_gntr]
+   T = full_data_table[!,"Avg Time (hr)"]
+   mean_mRNA = full_data_table3[!,"<VVOE + GntR_Ecoli + Gluconate>"]
+   stdev_mRNA = full_data_table3[!,"SD1"]
+   mean_mRNA_gntr = full_data_table3[!,"GntR1"]
+   stdev_mRNA_gntr = full_data_table3[!,"SD_1"]
+   mRNA_data_array = [T mean_mRNA stdev_mRNA mean_mRNA_gntr stdev_mRNA_gntr]
 
   # package -------------------------------------------------- #
-  #exp_data_dictionary["mRNA_data_array"] = mRNA_data_array
+  exp_data_dictionary["mRNA_data_array"] = mRNA_data_array
   exp_data_dictionary["prot_data_array"] = prot_data_array
 
   return exp_data_dictionary
