@@ -91,7 +91,6 @@ function calculate_transcription_control_array(t::Float64,x::Array{Float64,1},da
 	W_S70_RNAP_mP70=control_parameter_dictionary["W_S70_RNAP_mP70"] 
 	W_S28_RNAP_P28=control_parameter_dictionary["W_S28_RNAP_P28"] 
 	W_GntR_mP70=control_parameter_dictionary["W_GntR_mP70"]  #binds to mP70	
-	W_GntR_gluconate_protein=control_parameter_dictionary["W_GntR_gluconate_protein"]
 	W_AS28_S28_P28=control_parameter_dictionary["W_AS28_S28_P28"] 
 	
 
@@ -103,9 +102,11 @@ function calculate_transcription_control_array(t::Float64,x::Array{Float64,1},da
 	protein_S70= gluconate_parameter_dictionary["Protein_sigma_70"]
 
 	A1= Gluc_conc ^ n_gluconate_GntR 
-	B1= (Gluc_conc^n_gluconate_GntR) +(K_gluconate_GntR^n_gluconate_GntR) 
+	term1A=real(Gluc_conc^n_gluconate_GntR)
+	term1B=real(K_gluconate_GntR^n_gluconate_GntR) 
+	B1= term1A+ term1B
 
-	f_gluc_GntR = A1/B1  #equivalent to f bound
+	f_gluc_GntR = real(A1/B1)  #equivalent to f bound
 
 	
 	protein_GntR= (1-f_gluc_GntR)*protein_GntR #Remaining GntR unbound fraction (free from gluconate) #this protein changes but not actor set 2
@@ -166,8 +167,8 @@ function calculate_transcription_control_array(t::Float64,x::Array{Float64,1},da
 
 #actor changes properly 
 
-    A=(actor^n_GntR_mP70_AS28) 
-	B=actor^(n_GntR_mP70_AS28) + (K_GntR_mP70_AS28)^n_GntR_mP70_AS28
+    A=real(actor^n_GntR_mP70_AS28) 
+	B=real(actor^(n_GntR_mP70_AS28)) + real((K_GntR_mP70_AS28)^n_GntR_mP70_AS28)
 
 
 	f_GntR_mP70_AS28= A/B #GntR binds to the mP70 promoter which is upstream of as28 gene 
@@ -179,15 +180,14 @@ function calculate_transcription_control_array(t::Float64,x::Array{Float64,1},da
 	#print("The value of actor in this case:",actor,"\n")
 	f_S70_RNAP_AS28= (actors ^n_S70_RNAP_AS28) / ( actors ^n_S70_RNAP_AS28 + K_S70_RNAP_AS28 ^n_S70_RNAP_AS28) 
 	
-	beta=1 #weight function,SAY 1 not 100
 
 	#print("The value of f_gluc is $(f_gluc_GntR), while the value for f_GntR_mP70_AS28 is:  $(f_GntR_mP70_AS28)   for glucose concentration $(Gluc_conc) \n")
 	a1=W_RNAP_mP70 + W_S70_RNAP_mP70*f_S70_RNAP_AS28
 	a2=W_GntR_mP70*(f_gluc_GntR)*(f_GntR_mP70_AS28)
 
-	num3= (a1) + beta*(a2)
+	num3= (a1) + (a2)
 
-    den3=1+(a1)+(beta*a2)
+    den3=1+(a1)+(a2)
 
 	control_array[3]=num3/den3
 
@@ -235,10 +235,12 @@ function calculate_transcription_control_array(t::Float64,x::Array{Float64,1},da
 		
 	actor3= prod(actor_set3)
 
-	A3= (K_AS28_S28_BFP^n_AS28_S28_BFP)
-	B3= actor3^n_AS28_S28_BFP + K_AS28_S28_BFP^n_AS28_S28_BFP
+	A3= real(K_AS28_S28_BFP^n_AS28_S28_BFP)
+	term1=real(actor3^n_AS28_S28_BFP) #potential error
+	term2= real(K_AS28_S28_BFP^n_AS28_S28_BFP)
+	B3= term1+ term2
 
-	f_AS28_S28_BFP= A3/B3 
+	f_AS28_S28_BFP= real(A3/B3) 
 
 	protein_S28= (1-f_AS28_S28_BFP)*protein_AS28 
 	
@@ -246,12 +248,15 @@ function calculate_transcription_control_array(t::Float64,x::Array{Float64,1},da
 
 	actor4= prod(actor_set4)
 
-	f_S28_RNAP_BFP = (actor4^ n_S28_RNAP_BFP) / ( actor4^ n_S28_RNAP_BFP + K_S28_RNAP_BFP ^ n_S28_RNAP_BFP)
+	f_S28_RNAP_BFP =(actor4^ n_S28_RNAP_BFP) /( actor4^ n_S28_RNAP_BFP + K_S28_RNAP_BFP ^ n_S28_RNAP_BFP) #this will always be real
+
 
 	num5= W_RNAP_P28 + W_S28_RNAP_P28 *f_S28_RNAP_BFP 
 
-	beta= 1E-2
-	den5= 1 + num5  + beta/(W_AS28_S28_P28*f_AS28_S28_BFP)  
+	f_anti_S28_RNAP_BFP=(K_S28_RNAP_BFP^ n_S28_RNAP_BFP) /( actor4^ n_S28_RNAP_BFP + K_S28_RNAP_BFP ^ n_S28_RNAP_BFP)
+
+	
+	den5= 1 + num5  + 1E-2/ ((W_AS28_S28_P28)*f_anti_S28_RNAP_BFP)  #idek if this is allowed
 	#the last term in denominator refers to the inhibitory role that AS28 plays in blocking BFP production
 
 	control_array[5]= num5/den5 
