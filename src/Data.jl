@@ -158,7 +158,7 @@ function build_data_dictionary(time_span::Tuple{Float64,Float64,Float64}, path_t
 	
 	# D- Gluconate parameter values
 	gluconate_parameter_dictionary = Dict{String,Float64}()
-	gluconate_parameter_dictionary["gluconate_concentration"]=1e1 # units mM- should be 1e-5 mM for fittng the model (The range works from 1e3mM to 1e-5mM)
+	gluconate_parameter_dictionary["gluconate_concentration"]=1e-5 # units mM- should be 1e-5 mM for fittng the model (The range works from 1e3mM to 1e-5mM)
 	gluconate_parameter_dictionary["n_gluconate_GntR"] = 1 #units are in mM
 	gluconate_parameter_dictionary["K_gluconate_GntR"] = 1 # mM
 	gluconate_parameter_dictionary["Protein_sigma_70"] = 3.5 #nM units
