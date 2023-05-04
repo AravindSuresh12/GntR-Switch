@@ -102,8 +102,8 @@ function calculate_transcription_control_array(t::Float64,x::Array{Float64,1},da
 	protein_S70= gluconate_parameter_dictionary["Protein_sigma_70"]
 
 	A1= Gluc_conc ^ n_gluconate_GntR 
-	term1A=real(Gluc_conc^n_gluconate_GntR)
-	term1B=real(K_gluconate_GntR^n_gluconate_GntR) 
+	term1A=real(Gluc_conc^abs(n_gluconate_GntR))
+	term1B=real(abs(K_gluconate_GntR)^abs(n_gluconate_GntR))
 	B1= term1A+ term1B
 
 	f_gluc_GntR = real(A1/B1)  #equivalent to f bound
@@ -128,8 +128,13 @@ function calculate_transcription_control_array(t::Float64,x::Array{Float64,1},da
 
 	actors= protein_S70 #Since this is assumed to be a time invariant source, no need to take prod of it ie 3.5 e-3, because k for this is in uM 
 
-	f_S70_RNAP_GntR= (actors ^n_S70_RNAP_GntR) / ( (actors ^ n_S70_RNAP_GntR) + (K_S70_RNAP_GntR ^ n_S70_RNAP_GntR) )  #will also be a constant number always
+	term_num= real(actors ^real(n_S70_RNAP_GntR))
+	term_den_1= real(actors ^real(n_S70_RNAP_GntR))
+	term_den_2= (real(abs(K_S70_RNAP_GntR))^(real(abs(n_S70_RNAP_GntR))))
 
+	term_den= term_den_1+ term_den_2
+
+	f_S70_RNAP_GntR=  real(term_num/term_den)   
 	#print("the f value controlling actor is : $(f_S70_RNAP_GntR) \n")
 	
 
@@ -145,7 +150,7 @@ function calculate_transcription_control_array(t::Float64,x::Array{Float64,1},da
 
 	#2 for S28 production- 
 
-	f_S70_RNAP_S28= (actors ^n_S70_RNAP_S28) / ( (actors ^n_S70_RNAP_S28) + (K_S70_RNAP_S28 ^n_S70_RNAP_S28) ) 
+	f_S70_RNAP_S28= real(actors ^n_S70_RNAP_S28) / ( real(actors ^n_S70_RNAP_S28) + real(abs(K_S70_RNAP_S28) ^abs(n_S70_RNAP_S28)) ) 
 
 	num2= W_RNAP_P70 + W_S70_RNAP_P70*f_S70_RNAP_S28 #because S28 gene is under the control of P70 promoter
 	den2= 1+ W_RNAP_P70 + W_S70_RNAP_P70*f_S70_RNAP_S28
@@ -167,18 +172,20 @@ function calculate_transcription_control_array(t::Float64,x::Array{Float64,1},da
 
 #actor changes properly 
 
-    A=real(actor^n_GntR_mP70_AS28) 
-	B=real(actor^(n_GntR_mP70_AS28)) + real((K_GntR_mP70_AS28)^n_GntR_mP70_AS28)
+    A=abs(actor)^abs(n_GntR_mP70_AS28) #THE error point 
+	B2=real(abs(K_GntR_mP70_AS28)^abs(n_GntR_mP70_AS28))
+
+	B=A+B2
 
 
-	f_GntR_mP70_AS28= A/B #GntR binds to the mP70 promoter which is upstream of as28 gene 
+	f_GntR_mP70_AS28= real(abs(A/B)) #GntR binds to the mP70 promoter which is upstream of as28 gene 
 
 	#print("For gluconate value:   $(Gluc_conc), the f value is:   $(f_GntR_mP70_AS28) \n")
 
 	#The f function which talks about S70-RNAP complex binding with mP70 on AS28 gene
 
 	#print("The value of actor in this case:",actor,"\n")
-	f_S70_RNAP_AS28= (actors ^n_S70_RNAP_AS28) / ( actors ^n_S70_RNAP_AS28 + K_S70_RNAP_AS28 ^n_S70_RNAP_AS28) 
+	f_S70_RNAP_AS28= (actors ^(n_S70_RNAP_AS28)) / ( actors ^abs(n_S70_RNAP_AS28) + abs(K_S70_RNAP_AS28) ^abs(n_S70_RNAP_AS28))
 	
 
 	#print("The value of f_gluc is $(f_gluc_GntR), while the value for f_GntR_mP70_AS28 is:  $(f_GntR_mP70_AS28)   for glucose concentration $(Gluc_conc) \n")
@@ -205,8 +212,8 @@ function calculate_transcription_control_array(t::Float64,x::Array{Float64,1},da
 
 	#the f function which talks about GntR binding with mP70 
 
-	A4= actor ^ n_GntR_mP70_Venus
-	B4= actor ^ (n_GntR_mP70_Venus) + K_GntR_mP70_Venus ^ n_GntR_mP70_Venus
+	A4= abs(actor) ^ abs(n_GntR_mP70_Venus)
+	B4= real(abs(actor) ^ abs(n_GntR_mP70_Venus) + abs(K_GntR_mP70_Venus) ^ abs(n_GntR_mP70_Venus))
 
     f_GntR_mP70_Venus= A4/B4 #(actor ^ n_GntR_mP70_Venus) /( actor ^ n_GntR_mP70_Venus + K_GntR_mP70_Venus ^ n_GntR_mP70_Venus ) 
 
@@ -214,7 +221,7 @@ function calculate_transcription_control_array(t::Float64,x::Array{Float64,1},da
 
 	#The f function which talks about S70-RNAP complex binding with mP70 for downstream Venus gene
 
-	f_S70_RNAP_Venus= (actors ^n_S70_RNAP_Venus) / ( actors ^ n_S70_RNAP_Venus + K_S70_RNAP_Venus ^ n_S70_RNAP_Venus) 
+	f_S70_RNAP_Venus= (actors ^abs(n_S70_RNAP_Venus)) / ( actors ^ abs(n_S70_RNAP_Venus) + abs(K_S70_RNAP_Venus) ^ abs(n_S70_RNAP_Venus)) 
 
 	
 
@@ -229,18 +236,20 @@ function calculate_transcription_control_array(t::Float64,x::Array{Float64,1},da
 
 	#5 for BFP 
 
-	#AS28 is like an inhibitor molecule for S28- like how Gluconate is to GntR, but in reverse 
+	#AS28 is like an inhibitor molecule for S28- like how Gluconate is to GntR, but in reverse .. as more and more as28 binds to s28, inhibition starts
 
 	actor_set3= [protein_AS28]'  
 		
 	actor3= prod(actor_set3)
 
-	A3= real(K_AS28_S28_BFP^n_AS28_S28_BFP)
-	term1=real(actor3^n_AS28_S28_BFP) #potential error
-	term2= real(K_AS28_S28_BFP^n_AS28_S28_BFP)
-	B3= term1+ term2
+	#print("The potential value range of actor_set3's f AS28 is $(actor3)","\n")
 
-	f_AS28_S28_BFP= real(A3/B3) 
+	A3= abs(K_AS28_S28_BFP)^abs(n_AS28_S28_BFP)
+	term1=abs(actor3)^abs(n_AS28_S28_BFP) #potential error
+	term2= abs(K_AS28_S28_BFP)^abs(n_AS28_S28_BFP)
+	B3= real(term1+ term2)
+
+	f_AS28_S28_BFP= real(abs(A3/B3)) 
 
 	protein_S28= (1-f_AS28_S28_BFP)*protein_AS28 
 	
@@ -248,28 +257,27 @@ function calculate_transcription_control_array(t::Float64,x::Array{Float64,1},da
 
 	actor4= prod(actor_set4)
 
-	f_S28_RNAP_BFP =(actor4^ n_S28_RNAP_BFP) /( actor4^ n_S28_RNAP_BFP + K_S28_RNAP_BFP ^ n_S28_RNAP_BFP) #this will always be real
+	term_num4= real(abs(actor4)^ abs(n_S28_RNAP_BFP))
+	term_den4= real(abs(actor4))^abs(n_S28_RNAP_BFP) + abs(K_S28_RNAP_BFP)^abs(n_S28_RNAP_BFP)
+
+	f_S28_RNAP_BFP =term_num4/term_den4 #this will always be real
 
 
 	num5= W_RNAP_P28 + W_S28_RNAP_P28 *f_S28_RNAP_BFP 
 
-	f_anti_S28_RNAP_BFP=(K_S28_RNAP_BFP^ n_S28_RNAP_BFP) /( actor4^ n_S28_RNAP_BFP + K_S28_RNAP_BFP ^ n_S28_RNAP_BFP)
+	f_anti_S28_RNAP_BFP=(abs(actor3)^ abs(n_AS28_S28_BFP)) /( abs(actor3)^ abs(n_AS28_S28_BFP) + abs(K_AS28_S28_BFP) ^ abs(n_AS28_S28_BFP)) #as28 binds to s28
 
-	
-	den5= 1 + num5  + 1E-2/ ((W_AS28_S28_P28)*f_anti_S28_RNAP_BFP)  #idek if this is allowed
-	#the last term in denominator refers to the inhibitory role that AS28 plays in blocking BFP production
+	#print("The potential value range of actor_set3's f AS28 is $(f_anti_S28_RNAP_BFP))","\n")
+	Factor=8
+
+	den5= 1 + num5  + ((W_AS28_S28_P28)*(f_anti_S28_RNAP_BFP)*Factor)
+
+	#print("The value of num5 is $(num5)","\n") #from 0.99 to 0.99
+	#print("The value of the first two terms are is $(1+num5)","\n") #Varies from 1.90 to 1.99
+	#print("The W_F*factor function in denmoniator is, $((W_AS28_S28_P28)*(f_anti_S28_RNAP_BFP)*Factor)","\n") #varies from 4 to 35
+
 
 	control_array[5]= num5/den5 
-
-	
-	#estimate transcription_capacity_delay and transcription_capacity_slope parameters
-	transcription_capacity_delay = data_dictionary["transcription_capacity_delay"] 
-	transcription_capacity_slope = data_dictionary["transcription_capacity_slope"] 
-	# build control array with these two logistic function parameters
-	f(y)= (1+exp((-transcription_capacity_delay*pi)/(transcription_capacity_slope*sqrt(3))))/(1+exp(((y-transcription_capacity_delay)*pi)/(transcription_capacity_slope*sqrt(3))))
-	correction_term_manual=f(t)
-	#control_array=control_array*correction_term_manual #Try for now ? originally ABHI commented it out 
-	control_array=control_array
 
 	# return -
 	return control_array
@@ -300,11 +308,11 @@ function calculate_translation_control_array(t::Float64,x::Array{Float64,1},data
 	# control_array=control_array*correction_term_manual
 
 	# estimate transcription_capacity_delay and transcription_capacity_slope parameters #these are what he added
-	translation_capacity_delay = data_dictionary["translation_capacity_delay"] 
-	translation_capacity_slope = data_dictionary["translation_capacity_slope"] 
+	#translation_capacity_delay = data_dictionary["translation_capacity_delay"] 
+	#translation_capacity_slope = data_dictionary["translation_capacity_slope"] 
 	# build control array with these two logistic function parameters
-	f(y)= (1+exp((-translation_capacity_delay*pi)/(translation_capacity_slope*sqrt(3))))/(1+exp(((y-translation_capacity_delay)*pi)/(translation_capacity_slope*sqrt(3))))
-	correction_term_manual=f(t)
+	#f(y)= (1+exp((-translation_capacity_delay*pi)/(translation_capacity_slope*sqrt(3))))/(1+exp(((y-translation_capacity_delay)*pi)/(translation_capacity_slope*sqrt(3))))
+	#correction_term_manual=f(t)
 	#control_array=control_array*correction_term_manual #THIS WAS ORIGINALLY COMMENTED OUT
 	
 	

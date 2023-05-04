@@ -1,7 +1,6 @@
-##
 
-include("Include.jl")
 ##
+include("Include.jl")
 function objective_function(parameter_guess_array,time_start,time_step_size,time_stop,model_data_dictionary, exp_data_dictionary)  
 
     # what is the host_type?
@@ -15,7 +14,7 @@ function objective_function(parameter_guess_array,time_start,time_step_size,time
 
     # compute W -
     tmp_W_array = Float64[]
-    for index = 1:9
+    for index = 1:8
         parameter_guess = parameter_guess_array[index]
         value = exp(-1*(parameter_guess))
         push!(tmp_W_array,value)
@@ -30,32 +29,27 @@ function objective_function(parameter_guess_array,time_start,time_step_size,time
 	control_parameter_dictionary["W_S70_RNAP_mP70"] = tmp_W_array[5]
 	control_parameter_dictionary["W_S28_RNAP_P28"] = tmp_W_array[6]
 	control_parameter_dictionary["W_GntR_mP70"] = tmp_W_array[7]
-    control_parameter_dictionary["W_GntR_gluconate_protein"] = tmp_W_array[8]
-	control_parameter_dictionary["W_AS28_S28"] = tmp_W_array[9]
+	control_parameter_dictionary["W_AS28_S28"] = tmp_W_array[8]
     model_data_dictionary["control_parameter_dictionary"] = control_parameter_dictionary
 	#print(control_parameter_dictionary)
 
     binding_parameter_dictionary = model_data_dictionary["binding_parameter_dictionary"]
-    binding_parameter_dictionary["n_S70_RNAP_GntR"]=parameter_guess_array[10]
-	binding_parameter_dictionary["K_S70_RNAP_GntR"]=parameter_guess_array[11]
-	binding_parameter_dictionary["n_S70_RNAP_S28"]=parameter_guess_array[12]
-	binding_parameter_dictionary["K_S70_RNAP_S28"]=parameter_guess_array[13]
-	binding_parameter_dictionary["n_S70_RNAP_AS28"]=parameter_guess_array[14]
-    binding_parameter_dictionary["K_S70_RNAP_AS28"]=parameter_guess_array[15]
-	binding_parameter_dictionary["n_S70_RNAP_Venus"]=parameter_guess_array[16]
-    binding_parameter_dictionary["K_S70_RNAP_Venus"]=parameter_guess_array[17]
-	binding_parameter_dictionary["n_GntR_mP70_AS28"]=parameter_guess_array[18]
-	binding_parameter_dictionary["K_GntR_mP70_AS28"]=parameter_guess_array[19]
-	binding_parameter_dictionary["n_GntR_mP70_Venus"]=parameter_guess_array[20]
-	binding_parameter_dictionary["K_GntR_mP70_Venus"]=parameter_guess_array[21]
-	binding_parameter_dictionary["n_S28_RNAP_BFP"]=parameter_guess_array[22]
-	binding_parameter_dictionary["K_S28_RNAP_BFP"]=parameter_guess_array[23]
-	binding_parameter_dictionary["n_AS28_S28_BFP"]=parameter_guess_array[24]
-	binding_parameter_dictionary["K_AS28_S28_BFP"]=parameter_guess_array[25]
-
-
-
-
+    binding_parameter_dictionary["n_S70_RNAP_GntR"]=parameter_guess_array[9]
+	binding_parameter_dictionary["K_S70_RNAP_GntR"]=parameter_guess_array[10]
+	binding_parameter_dictionary["n_S70_RNAP_S28"]=parameter_guess_array[11]
+	binding_parameter_dictionary["K_S70_RNAP_S28"]=parameter_guess_array[12]
+	binding_parameter_dictionary["n_S70_RNAP_AS28"]=parameter_guess_array[13]
+    binding_parameter_dictionary["K_S70_RNAP_AS28"]=parameter_guess_array[14]
+	binding_parameter_dictionary["n_S70_RNAP_Venus"]=parameter_guess_array[15]
+    binding_parameter_dictionary["K_S70_RNAP_Venus"]=parameter_guess_array[16]
+	binding_parameter_dictionary["n_GntR_mP70_AS28"]=parameter_guess_array[17]
+	binding_parameter_dictionary["K_GntR_mP70_AS28"]=parameter_guess_array[18]
+	binding_parameter_dictionary["n_GntR_mP70_Venus"]=parameter_guess_array[19]
+	binding_parameter_dictionary["K_GntR_mP70_Venus"]=parameter_guess_array[20]
+	binding_parameter_dictionary["n_S28_RNAP_BFP"]=parameter_guess_array[21]
+	binding_parameter_dictionary["K_S28_RNAP_BFP"]=parameter_guess_array[22]
+	binding_parameter_dictionary["n_AS28_S28_BFP"]=parameter_guess_array[23]
+	binding_parameter_dictionary["K_AS28_S28_BFP"]=parameter_guess_array[24]
 
     model_data_dictionary["binding_parameter_dictionary"] = binding_parameter_dictionary
 
@@ -68,16 +62,16 @@ function objective_function(parameter_guess_array,time_start,time_step_size,time
 		0.0							;	# 3	AS28
         0.0                         ;   # 4 Venus 
         0.0                         ;   # 5 BFP
-		parameter_guess_array[26]	;	# 6	mRNA_GntR
-		parameter_guess_array[27]	;	# 7	mRNA_S28
-		parameter_guess_array[28]	;	# 8	mRNA_AS28
-        parameter_guess_array[29]	;	# 9	mRNA_Venus							;
-        parameter_guess_array[30]   ;   # 10 mRNA_BFP
-		parameter_guess_array[31]	;	# 11	protein_GntR
-		parameter_guess_array[32]	;	# 12	protein_S28
-        parameter_guess_array[33]	;	# 13	protein_AS28
-        parameter_guess_array[34]	;	# 14	protein_Venus
-        parameter_guess_array[35]	;	# 15	protein_BFP
+		parameter_guess_array[25]	;	# 6	mRNA_GntR 
+		parameter_guess_array[26]	;	# 7	mRNA_S28
+		parameter_guess_array[27]	;	# 8	mRNA_AS28
+        parameter_guess_array[28]	;	# 9	mRNA_Venus							;
+        parameter_guess_array[29]   ;   # 10 mRNA_BFP
+		parameter_guess_array[30]	;	# 11	protein_GntR
+		parameter_guess_array[31]	;	# 12	protein_S28
+        parameter_guess_array[32]	;	# 13	protein_AS28
+        parameter_guess_array[33]	;	# 14	protein_Venus
+        parameter_guess_array[34]	;	# 15	protein_BFP
 	]
 
     model_data_dictionary["time_constant_modifier_array"] = time_constant_modifier_array
@@ -90,41 +84,41 @@ function objective_function(parameter_guess_array,time_start,time_step_size,time
 		0.0	;	# 3	sigma_70
         0.0 ;   # 4 Venus
         0.0 ;   # 5 BFP
-		parameter_guess_array[36]	;	# 6	mRNA_GntR
-		parameter_guess_array[37]	;	# 7	mRNA_S28
-		parameter_guess_array[38]   ;   # 8 mRNA_AS28
-        parameter_guess_array[39]   ;   # 9 mRNA_Venus
-        parameter_guess_array[40]   ;   # 10 mRNA_BFP
-		parameter_guess_array[41]	;	# 11	protein_GntR
-		parameter_guess_array[42]	;	# 12	protein_Venus
-		parameter_guess_array[43]	;	# 13	protein_sigma_70
-        parameter_guess_array[44]	;	# 14	protein_Venus
-        parameter_guess_array[45]	;	# 13	protein_BFP
+		parameter_guess_array[35]	;	# 6	mRNA_GntR
+		parameter_guess_array[36]	;	# 7	mRNA_S28
+		parameter_guess_array[37]   ;   # 8 mRNA_AS28
+        parameter_guess_array[38]   ;   # 9 mRNA_Venus
+        parameter_guess_array[39]   ;   # 10 mRNA_BFP
+		parameter_guess_array[40]	;	# 11	protein_GntR
+		parameter_guess_array[41]	;	# 12	protein_Venus
+		parameter_guess_array[42]	;	# 13	protein_sigma_70
+        parameter_guess_array[43]	;	# 14	protein_Venus
+        parameter_guess_array[44]	;	# 13	protein_BFP
 	]
 
 	model_data_dictionary["degradation_modifier_array"] = degradation_modifier_array
 
     # update the translation time -
-    model_data_dictionary["half_life_translation_capacity"] = parameter_guess_array[46]
+    model_data_dictionary["half_life_translation_capacity"] = parameter_guess_array[45]
 
     # lastly, update KL -
     biophysical_constants_dictionary = model_data_dictionary["biophysical_constants_dictionary"]
-    biophysical_constants_dictionary["translation_saturation_constant"] = parameter_guess_array[47]
+    biophysical_constants_dictionary["translation_saturation_constant"] = parameter_guess_array[46]
     model_data_dictionary["biophysical_constants_dictionary"] = biophysical_constants_dictionary
 
 	# gluconate GntR binding parameters
 	gluconate_parameter_dictionary = model_data_dictionary["gluconate_parameter_dictionary"]
-	gluconate_parameter_dictionary["n_gluconate_GntR"] = parameter_guess_array[48]
-	gluconate_parameter_dictionary["K_gluconate_GntR"] = parameter_guess_array[49]
+	gluconate_parameter_dictionary["n_gluconate_GntR"] = parameter_guess_array[47]
+	gluconate_parameter_dictionary["K_gluconate_GntR"] = parameter_guess_array[48]
 	model_data_dictionary["gluconate_parameter_dictionary"] = gluconate_parameter_dictionary
 
     # update the transcription capacity parameters
-    model_data_dictionary["transcription_capacity_delay"] = parameter_guess_array[50]
-    model_data_dictionary["transcription_capacity_slope"] = parameter_guess_array[51]
+    #model_data_dictionary["transcription_capacity_delay"] = parameter_guess_array[49]
+    #model_data_dictionary["transcription_capacity_slope"] = parameter_guess_array[50]
     
     # update the translation capacity parameters
-    model_data_dictionary["translation_capacity_delay"] = parameter_guess_array[52]
-    model_data_dictionary["translation_capacity_slope"] = parameter_guess_array[53]
+    #model_data_dictionary["translation_capacity_delay"] = parameter_guess_array[51]
+    #model_data_dictionary["translation_capacity_slope"] = parameter_guess_array[52]
 
 
     # grab defaults -
@@ -163,127 +157,86 @@ function objective_function(parameter_guess_array,time_start,time_step_size,time
     # # compute the error - we need to do a bunch of interpolation -
 
 	 tsim_exp_protein = exp_data_dictionary["prot_data_array"][:,1]
+	 tsim_exp_mRNA = exp_data_dictionary["mRNA_data_array"][:,1]
 
-    # # Venus mRNA -
-    # itp_Venus_mRNA =  Interpolations.LinearInterpolation(TSIM, (1000)*XSIM[:,5]);
-    # mRNA_Venus_sim = itp_Venus_mRNA[tsim_exp_protein]  # convert to muM from nM
 
-	# tsim_exp_mRNA = exp_data_dictionary["mRNA_data_array"][:,1]
-
-	# # GntR mRNA -
-	# itp_GntR_mRNA =  Interpolations.LinearInterpolation(TSIM, (1000)*XSIM[:,4]);
-	# # mRNA_GntR_sim = itp_GntR_mRNA[tsim_exp_mRNA]  # convert to muM from nM
-    # mRNA_GntR_sim = itp_GntR_mRNA[tsim_exp_protein]  # convert to muM from nM
-
-    #Doing simulations for all 5 protein formations
-
-    # GntR
-
-    itp_GntR_protein =  Interpolations.LinearInterpolation(TSIM, XSIM[:,11]);
-    protein_GntR_sim = itp_GntR_protein[tsim_exp_protein] #also an error point
-
-    #S28
-
-    itp_S28_protein =  Interpolations.LinearInterpolation(TSIM, XSIM[:,12]);
-    protein_S28_sim = itp_S28_protein[tsim_exp_protein]
-
-    #AS28
-
-    itp_AS28_protein =  Interpolations.LinearInterpolation(TSIM, XSIM[:,13]);
-    protein_AS28_sim = itp_AS28_protein[tsim_exp_protein]
-
-    #Venus -
+    #Venus Protein
 
     itp_Venus_protein =  Interpolations.LinearInterpolation(TSIM, XSIM[:,14]);
     protein_Venus_sim = itp_Venus_protein[tsim_exp_protein]
 
-    # # BFP
+    # # BFP Protein
 
     itp_BFP_protein =  Interpolations.LinearInterpolation(TSIM, XSIM[:,15]);
     protein_BFP_sim = itp_BFP_protein[tsim_exp_protein]
 
-    # # get experimental data Venus-
-    # mRNA_Venus_exp = exp_data_dictionary["mRNA_data_array"][:,2]          # mean is col 2 nM
-	# mRNA_Venus_std_exp = exp_data_dictionary["mRNA_data_array"][:,3]      # stdev is col 3 nM
 
-    #only for BFP and Venus do we have experimental data
+    #only for BFP and Venus do we have experimental data and mRNA for venus and GntR
 
-    protein_Venus_exp = exp_data_dictionary["prot_data_array"][:,2]       # mean is col 2 muM
-	protein_Venus_std_exp = exp_data_dictionary["prot_data_array"][:,3]   # stdev is col 3 muM
+    protein_Venus_exp = exp_data_dictionary["prot_data_array"][:,2]       # 
+	protein_Venus_std_exp = exp_data_dictionary["prot_data_array"][:,3]   # 
  
-    protein_BFP_exp = exp_data_dictionary["prot_data_array"][:,4]       # mean is col 2 muM
-	protein_BFP_std_exp = exp_data_dictionary["prot_data_array"][:,5]   # stdev is col 3 muM
- 
-	# # get experimental data GntR-
-    # mRNA_GntR_exp = exp_data_dictionary["mRNA_data_array"][[1,2,4,5],4]  # ABHI: ignore 4h point
-	# mRNA_GntR_std_exp = exp_data_dictionary["mRNA_data_array"][:,5]      # stdev is col 3 nM
+    protein_BFP_exp = exp_data_dictionary["prot_data_array"][:,4]       # mean 
+	protein_BFP_std_exp = exp_data_dictionary["prot_data_array"][:,5]   # stdev is col 5 (muM)
 
-    # tsim_exp_mRNA = exp_data_dictionary["mRNA_data_array"][[1,2,4,5],1]
-	# A = DataInterpolations.CubicSpline(mRNA_GntR_exp,tsim_exp_mRNA)
-	# mRNA_GntR_exp = A.(tsim_exp_protein)
+    #mRNA data
+
+    itp_Venus_mRNA =  Interpolations.LinearInterpolation(TSIM, (1000)*XSIM[:,9]);
+    mRNA_Venus_sim = itp_Venus_mRNA[tsim_exp_protein]
+
+    itp_BFP_mRNA =  Interpolations.LinearInterpolation(TSIM, (1000)*XSIM[:,10]);
+    mRNA_BFP_sim = itp_BFP_mRNA[tsim_exp_protein]
 
 
-	# mRNA_Venus_exp = exp_data_dictionary["mRNA_data_array"][[1,2,4,5],2]
-	# tsim_exp_mRNA = exp_data_dictionary["mRNA_data_array"][[1,2,4,5],1]
-	# B = DataInterpolations.CubicSpline(mRNA_Venus_exp,tsim_exp_mRNA)
-	# mRNA_Venus_exp = B.(tsim_exp_protein)
+
+    mRNA_Venus_exp = exp_data_dictionary["prot_data_array"][:,2]  #nM
+    mRNA_Venus_exp_stderr=exp_data_dictionary["prot_data_array"][:,3]  
+    mRNA_BFP_exp= exp_data_dictionary["prot_data_array"][:,4] #nM
+    mRNA_BFP_exp_stderr=exp_data_dictionary["prot_data_array"][:,5]    
+
+
+    itp_Venus_mRNA =  Interpolations.LinearInterpolation(TSIM, 1000*XSIM[:,9]);
+    B = DataInterpolations.CubicSpline(mRNA_Venus_exp,tsim_exp_mRNA)
+    mRNA_Venus_exp = B.(tsim_exp_protein)
+
+
+
+    itp_BFP_mRNA =  Interpolations.LinearInterpolation(TSIM,1000*XSIM[:,10]); #uM to nM
+    C = DataInterpolations.CubicSpline(mRNA_BFP_exp,tsim_exp_mRNA)
+    mRNA_Venus_exp = C.(tsim_exp_protein)
 
     #  compute error terms -
-    error_term_array = zeros(5,1) 
-    # # error_term_array = zeros(4,1)
+    error_term_array = zeros(4,1) 
 
     # # mRNA Venus -
-    # # mRNA_Venus_std_exp[1] = 1.0   # we have 0 ic
-    # # tmp_arr = 1.0./((mRNA_Venus_std_exp).^2)
-    # # W_mRNA = transpose([0.001,100,1,1000,100])
-    # # error_vector_1 = W_mRNA * (mRNA_Venus_exp .- mRNA_Venus_sim)
 	
-    # # error_vector_1a = ((mRNA_Venus_exp.-minimum(mRNA_Venus_exp))./(maximum(mRNA_Venus_exp).-minimum(mRNA_Venus_exp))) .- ((mRNA_Venus_sim.-minimum(mRNA_Venus_sim))./(maximum(mRNA_Venus_sim).-minimum(mRNA_Venus_sim)))
-    # # error_vector_1b = (maximum(mRNA_Venus_exp).-maximum(mRNA_Venus_sim))./(maximum(mRNA_Venus_exp))
-    # # error_term_array[1] = 100*(transpose(error_vector_1a)*error_vector_1a + transpose(error_vector_1b)*error_vector_1b)
-    # error_vector_1 = mRNA_Venus_exp .- mRNA_Venus_sim
-    # error_term_array[1] = (transpose(error_vector_1)*error_vector_1)
-
+    error_vector_1 = mRNA_Venus_exp .- mRNA_Venus_sim
 
     # protein Venus -
     protein_Venus_std_exp[1] = 1.0
     tmp_arr1 = 1.0./((protein_Venus_std_exp).^2)
     W_prot1 = diagm(tmp_arr1)
 
-    #protein BFP- THINK ABOUT THESE TWO in detail
+
+    error_vector_2 = protein_Venus_exp .- protein_Venus_sim 
+
+
+    #protein BFP- not having units..
     protein_BFP_std_exp[1] = 1.0
     tmp_arr2 = 1.0./((protein_BFP_std_exp).^2)
     W_prot2 = diagm(tmp_arr2)
 
+    error_vector_3 = protein_BFP_exp .- protein_BFP_sim 
 
-    error_vector_1= protein_Venus_exp .- protein_GntR_sim
-    error_vector_2= protein_Venus_exp .- protein_S28_sim
-    error_vector_3= protein_Venus_exp .- protein_AS28_sim
-    error_vector_4 = protein_Venus_exp .- protein_Venus_sim
-    error_vector_5 = protein_BFP_exp .- protein_BFP_sim
+    #mRNA GntR 
 
+    error_vector_4 = mRNA_BFP_exp .- mRNA_BFP_sim
 
-
-   
     # error_term_array[2] = transpose(error_vector_2a)*error_vector_2a + transpose(error_vector_2b)*error_vector_2b this includes mRNA also- for now im not doin it- the product takes care of the square 
-    error_term_array[1] = transpose(error_vector_1)*error_vector_1 #is this even allowed lol
+    error_term_array[1] = transpose(error_vector_1)*error_vector_1 
     error_term_array[2] = transpose(error_vector_2)*error_vector_2
     error_term_array[3] = transpose(error_vector_3)*error_vector_3
     error_term_array[4] = transpose(error_vector_4)*error_vector_4
-    error_term_array[5] = transpose(error_vector_5)*error_vector_5
-
-	
-    # # #create fake GntR protein data = venus protein data
-    # # # Venus protein -
-	# # tsim_exp_protein = exp_data_dictionary["prot_data_array"][:,1]
-
-    # # itp_GntR_protein =  Interpolations.LinearInterpolation(TSIM, XSIM[:,7]);
-    # # protein_GntR_sim = itp_GntR_protein[tsim_exp_protein]
-
-    # # error_vector_4= protein_Venus_exp .- protein_GntR_sim
-    # # error_term_array[4] = (transpose(error_vector_4)*error_vector_4)
-
-
     # # ===================================================================================================== #
 	#error_total = sum(error_term_array)
 
@@ -294,21 +247,22 @@ end
 # # Evaluates the objective function values -
 function local_refinement_step(path_to_data_dir, parameter_array; sigma=0.05, iteration_max=100)
 
-    #inner functions - computes a value total for each error term 
+
+    #inner functions - computes a value total for each error term and squishes it one single value 
     function _compute_error_total(objective_array,W)
-        value = transpose(objective_array)*W*objective_array
-        return value[1] #this should always be a float value, irrespective of the fact whether it is an array or not
+        value = transpose(objective_array)*W*(objective_array) 
+        return value[1] 
     end
 
     # initialize -
     
-    l= length(parameter_array)  #should be 41- parameter array is pvec initial
-    number_of_parameters=l #should be 41, should be 41
+    l= length(parameter_array) 
+    number_of_parameters=l 
     BIG = 1e10
 
     # load the default data_dictionary -
     time_start = 0.0
-    time_stop = 16.0
+    time_stop = 10.0
     time_step_size = 0.01
 
     # what is the host_type?
@@ -317,8 +271,8 @@ function local_refinement_step(path_to_data_dir, parameter_array; sigma=0.05, it
     # path to parameters -
     path_to_biophysical_constants_file = "./CellFree.json"
 
-#     # wght array -  #what does this array do?
-    W = diagm(ones(5)) #this is needed for making it one by one
+#     # wght array -  
+    W = diagm(ones(4)) #this is needed for making it one by one 
 
 
 #     # Load the data dictionary (uses the default biophysical_constants file)
@@ -336,7 +290,7 @@ function local_refinement_step(path_to_data_dir, parameter_array; sigma=0.05, it
 
     # calculate the starting error -
     parameter_array_best = parameter_array
-    error_array = BIG*ones(4) #for now, it should be 3+1, you are creating something new
+    error_array = BIG*ones(4) #
     error_array[1]=_compute_error_total(OF(parameter_array_best), W)
     
     # main refinement loop -
@@ -394,66 +348,62 @@ function check_parameter_bounds(parameter_array)
     # setup paramter bounds - User is supposed to give Parameter_bounds array
     pvec_bounds = [
 
-        # dG's -
-        0.01  5.0    	;   # 1     W_RNAP_P70
-        0.01  5.0    	;   # 2     W_RNAP_P28
-        0.01  5.0    	;   # 3     W_RNAP_mP70
-        0.01  5.0       ;   # 4     W_S70_RNAP_P70
-        0.01  5.0       ;   # 5     W_S70_RNAP_mP70
-        0.01  5.0       ;   # 6     W_S28_RNAP_P28
-        0.01  5.0       ;   # 7     W_GntR_mP70
-        0.01  5.0       ;   #8 new  W_GntR_gluconate_protein
-        0.01  5.0       ;   # 8     W_AS28_S28_P28
+        # dG's - log values (the exp of these values will be the W used in)
+
+        0.1 5.0  	;   # 1     W_RNAP_P70
+        0.1 5.0    	;   # 2     W_RNAP_P28
+        0.1 5.0   	;   # 3     W_RNAP_mP70 was initially 5 for limit
+        -5  -0.1       ;   # 4     W_S70_RNAP_P70
+        -5  -0.1       ;   # 5     W_S70_RNAP_mP70
+        -5  -0.1      ;   # 6     W_S28_RNAP_P28
+        -5   0.1       ;   # 7     W_GntR_mP70
+        -5.0 -0.1       ;   # 8     W_AS28_S28_P28- MAKING SURE IT bounds within 0.01 changed lb from -3.5 to -5
        
        
-
-
-
-    
 
         # binding parameters -
-        1 10.0            ;   # 9     n_S70_RNAP_GntR
-        0.001 100.0         ;   # 10     K_S70_RNAP_GntR
-		1 10.0            ;   # 11     n_S70_RNAP_S28
-        0.001 100.0         ;   # 12     K_S70_RNAP_S28
-        1 10.0            ;   # 13     n_S70_RNAP_AS28
-        0.001 100.0         ;   # 14     K_S70_RNAP_AS28
-        1 10.0            ;   # 15     n_S70_RNAP_Venus
-        0.001 100.0         ;   # 16     K_S70_RNAP_Venus        
-		1 10.0            ;   # 17    n_GntR_mP70_AS28
-        0.001 100.0         ;   # 18    K_GntR_mP70_AS28
-        1 10.0            ;   # 19    n_GntR_mP70_Venus
-        0.001 100.0         ;   # 20    K_GntR_mP70_Venus
-        1 10.0            ;   # 21     n_S28_RNAP_BFP
-        0.001 100.0         ;   # 22     K_S28_RNAP_BFP
-        1 10.0            ;   # 23    n_AS28_S28_BFP
-        0.001 100.0         ;   # 24    K_AS28_S28_BFP
+        1.0 10.0            ;   # 9     n_S70_RNAP_GntR
+        1e-2 100.0         ;   # 10     K_S70_RNAP_GntR
+		1.0 10.0            ;   # 11     n_S70_RNAP_S28
+        1e-2 100.0         ;   # 12     K_S70_RNAP_S28
+        1.0 10.0            ;   # 13     n_S70_RNAP_AS28
+        1e-2 100.0        ;   # 14     K_S70_RNAP_AS28
+        1.0 10.0            ;   # 15     n_S70_RNAP_Venus
+        1e-3 100.0         ;   # 16     K_S70_RNAP_Venus        
+		1.0 10.0            ;   # 17    n_GntR_mP70_AS28 #changed this to 10  from 4
+        1e-3 100.0         ;   # 18    K_GntR_mP70_AS28
+        1.0 10.0            ;   # 19    n_GntR_mP70_Venus
+        1e-3 100.0         ;   # 20    K_GntR_mP70_Venus
+        1.0 3.0            ;   # 21     n_S28_RNAP_BFP
+        1e-3 100.0         ;   # 22     K_S28_RNAP_BFP
+        1.0 3.0            ;   # 23    n_AS28_S28_BFP
+        1e-3 100.0         ;   # 24    K_AS28_S28_BFP
 
 
         # time constants -
-		0.001 100.0         ;	# 25	    mRNA_GntR
-		0.001 100.0         ;	# 26	    mRNA_S28
-        0.001 100.0         ;	# 27	    mRNA_AS28
-		0.001 100.0         ;	# 28	    mRNA_Venus
-        0.001 100.0         ;	# 29	    mRNA_BFP
-		0.001 100.0         ;	# 30	    protein_GntR
-		0.001 100.0         ;	# 31	    protein_S28
-        0.001 100.0         ;	# 32	    protein_AS28
-		0.001 100.0         ;	# 33	    protein_Venus
-        0.001 100.0         ;	# 34	    protein_BFP
+		1e-3 100.0         ;	# 25	    mRNA_GntR
+		1e-3 100.0         ;	# 26	    mRNA_S28
+        1e-3 100.0         ;	# 27	    mRNA_AS28
+		1e-3 100.0         ;	# 28	    mRNA_Venus
+        1e-3 100.0         ;	# 29	    mRNA_BFP
+		1e-3 100.0         ;	# 30	    protein_GntR
+		1e-3 100.0         ;	# 31	    protein_S28
+        1e-3 100.0         ;	# 32	    protein_AS28
+		1e-3 100.0         ;	# 33	    protein_Venus
+        1e-3 100.0         ;	# 34	    protein_BFP
        
         # degradation mods -
 
-        0.001 100.0         ;	# 35	    mRNA_GntR
-		0.001 100.0         ;	# 36	    mRNA_S28
-        0.001 100.0         ;	# 37	    mRNA_AS28
-		0.001 100.0         ;	# 38	    mRNA_Venus
-        0.001 100.0         ;	# 39	    mRNA_BFP
-		0.001 100.0         ;	# 40	    protein_GntR
-		0.001 100.0         ;	# 41	    protein_S28
-        0.001 100.0         ;	# 42	    protein_AS28
-		0.001 100.0         ;	# 43	    protein_Venus
-        0.001 100.0         ;	# 44	    protein_BFP
+        1e-3 100.0         ;	# 35	    mRNA_GntR
+		1e-3 100.0         ;	# 36	    mRNA_S28
+        1e-3 100.0         ;	# 37	    mRNA_AS28
+		1e-3 100.0         ;	# 38	    mRNA_Venus
+        1e-3 100.0         ;	# 39	    mRNA_BFP
+		1e-3 100.0         ;	# 40	    protein_GntR
+		1e-3 100.0         ;	# 41	    protein_S28
+        1e-3 100.0         ;	# 42	    protein_AS28
+		1e-3 100.0         ;	# 43	    protein_Venus
+        1e-3 100.0         ;	# 44	    protein_BFP
 	
 
          # w -
@@ -469,12 +419,12 @@ function check_parameter_bounds(parameter_array)
 		0.1 100.0				; # 48 mM
 
         # transcription capacity terms-
-        0.0 3.0; #49 decay (hours)
-        0.1 0.9; # 50 slope
+        #0.0 12.0; #49 decay (hours)
+        #0.01 0.9; # 50 slope
 
         #translation capacity terms-
-        0.0 3.0; # 51 decay (hours)
-        0.001 0.9; #52 slope
+        #0.0 5.0; # 51 decay (hours)
+        #0.001 0.9; #52 slope
     ];
 	
     #parameter_array = pvec_bounds
@@ -532,7 +482,7 @@ function main(path_to_data_dir::String, initial_parameter_array::Array{Float64,1
 
     # load the default data_dictionary -
     time_start = 0.0
-    time_stop = 16.0
+    time_stop = 10.0
     time_step_size = 0.01
 
     # what is the host_type?
@@ -564,37 +514,35 @@ end
 
 ##
 
- # setup initial condition vector - #I'll have to actually search for values online to set this up properly... For now, just see if the code is running- actual parameters to optimize would be numbered differently later
 pvec_initial = [
 
 	# dG's - Kj/mol
-	2.5    	;   # 1     W_RNAP_P70- From Abhi Work of GntR Model- 
-	1.5    	;   # 2     W_RNAP_P28 
-    -2.5    ;   # 3     W_RNAP_mP70 
+	4.0    	;   # 1     W_RNAP_P70- From Abhi Work of GntR Model- were initially 2.5 1.5 and 1 respectively, because for the model, it will be exp(-W)
+	4.0   	;   # 2     W_RNAP_P28 
+    4.0    ;   # 3     W_RNAP_mP70 
     -2.5    ;   # 4     W_S70_RNAP_P70 
-    -2.0    ;   # 5     W_S70_RNAP_mP70
-    -2.25   ;   # 6     W_S28_RNAP_P28
-    -1.0    ;   # 7     W_GntR_mP70 - from Abhi Work of GntR model
-    -2.5    ;   # 8     new W_GntR_gluconate_protein. #originally was -2.5
-	-1.0    ;   # 8     W_AS28_S28_P28 -directly responsible for BFP
+    -2.5    ;   # 5     W_S70_RNAP_mP70, s70 should have more trouble binding to operator region
+    -2.0   ;   # 6     W_S28_RNAP_P28
+    -2.5    ;   # 7     W_GntR_mP70 - from Abhi Work of GntR model
+	-2.0    ;   # 8     W_AS28_S28_P28 -directly responsible for BFP
 
 	# binding parameters -
-	1            ;   # 9     n_S70_RNAP_GntR
-	30         ;   # 10     K_S70_RNAP_GntR
-	1            ;   # 11     n_S70_RNAP_S28
-	10         ;   # 12     K_70_RNAP_S28
-    1            ;   # 13     n_S70_RNAP_AS28
-	30         ;   # 14     K_S70_RNAP_AS28
-	1            ;   # 15     n_S70_RNAP_Venus
-	10         ;   # 16     K_S70_RNAP_Venus
-	1            ;   # 17     n_GntR_mP70_AS28
-	1         ;   # 18    K_GntR_mP70_AS28
-    1            ;  # 19     n_GntR_mP70_Venus
-	1         ;   # 20    K_GntR_mP70_Venus
-    2.0       ;   #21 n_S28_RNAP_BFP
-    2.0      ;   #22 K_S28_RNAP_BFP
-    2.0       ;   #23 n_AS28_S28_BFP
-    2.0      ;   #24 K_AS28_S28_BFP
+	2.0            ;   # 9     n_S70_RNAP_GntR all n were 1 and K were 30
+	100       ;   # 10         K_S70_RNAP_GntR
+	2.0            ;   # 11     n_S70_RNAP_S28
+	100         ;   # 12     K_70_RNAP_S28 was 10
+    2            ;   # 13     n_S70_RNAP_AS28
+	15         ;   # 14     K_S70_RNAP_AS28
+	2            ;   # 15     n_S70_RNAP_Venus
+	15         ;   # 16     K_S70_RNAP_Venus
+	2            ;   # 17     n_GntR_mP70_AS28
+	1.5         ;   # 18    K_GntR_mP70_AS28
+    2            ;  # 19     n_GntR_mP70_Venus
+    1.5         ;   # 20    K_GntR_mP70_Venus
+    2       ;   #21 n_S28_RNAP_BFP
+    1      ;   #22 K_S28_RNAP_BFP assuming the last for values to be 1 instead of 2
+    2.5       ;   #23 n_AS28_S28_BFP
+    10    ;   #24 K_AS28_S28_BFP, was 2 and 50 for poet running 
 
 	# time constants - 
 	1.0         ;	#25	        #mRNA_GntR
@@ -603,11 +551,11 @@ pvec_initial = [
 	1.0         ;	# 28	    mRNA_Venus
     1.0         ;   # 29        mRNA_BFP
 
-	15          ;	# 30	    protein_GntR 
-	1.0         ;	# 31	    protein_S28
-    1.0         ;   # 32	    protein_AS28
-    1.0         ;	# 33	    protein_Venus
-    2.0         ;   # 34	    protein_BFP
+	1.0          ;	# 30	    protein_GntR Changing from 15, 1.2, 1.2, 0.8 , 0.8
+	1.2         ;	# 31	    protein_S28
+    1.2         ;   # 32	    protein_AS28
+    0.8         ;	# 33	    protein_Venus changed from 
+    0.8         ;   # 34	    protein_BFP
     
 
 	# degradation mods -
@@ -617,15 +565,15 @@ pvec_initial = [
 	1.0         ;	# 38	    mRNA_Venus
     1.0         ;   # 39        mRNA_BFP
 
-    1.0          ;	# 40	    protein_GntR 
-	1.0         ;	# 41	    protein_S28
-    1.0         ;   # 42	    protein_AS28
-    1.0         ;	# 43	    protein_Venus
-    0.6         ;   # 44	    protein_BFP
+    10.0          ;	# 40	    protein_GntR 
+	1.2         ;	# 41	    protein_S28
+    1.2         ;   # 42	   protein_AS28-changed from 1 to 1.2 and 0.6 to 0.8
+    0.8         ;	# 43	    protein_Venus Changed from 8,7 to 9.,9
+    0.8         ;   # 44	    protein_BFP
 
 
 	 # w -
-	 10.0           ;   # 45    translation capacity half-life
+	6.0           ;   # 45    translation capacity half-life
 
 	# KL value -
 	100.0         ;   # 46    KL in muM
@@ -637,52 +585,15 @@ pvec_initial = [
 	1.0					; #48 mM
 
     # transcription capacity terms-
-    0.0; # 49 decay (hours)
-    0.6; # 50 slope
+    #0.0; # 49 decay (hours)-
+    #0.6; # 50 slope
 
     # translation capacity terms-
-    0.0; #51 decay (hours)
-    0.1; #52 slope
+    #0.0; #51 decay (hours)
+    #0.1; #52 slope
 
 
 ];
-
-# # pvec_initial = [
-# #
-# # 	# dG's -
-# # 	4.4    	;   # 1     W_GntR_RNAP
-# # 	-5.0    ;   # 2     W_GntR_sigma_70
-# # 	3.3    	;   # 3     W_Venus_RNAP
-# # 	-0.98    ;   # 4     W_Venus_sigma_70
-# # 	-0.021    	;   # 5     W_Venus_GntR
-# #
-# # 	# binding parameters -
-# # 	0.5            ;   # 6     n_GntR_sigma_70
-# # 	3.7         ;   # 7     K_GntR_sigma_70
-# # 	2.01            ;   # 8     n_Venus_sigma_70
-# # 	2.66         ;   # 9     K_Venus_sigma_70
-# # 	9.027            ;   # 10     n_Venus_GntR
-# # 	74.99         ;   # 11    K_Venus_GntR
-# #
-# # 	# time constants -
-# # 	4.44         ;	# 12	    mRNA_GntR
-# # 	0.91         ;	# 13	    mRNA_Venus
-# # 	1.41         ;	# 14	    protein_GntR
-# # 	1.96         ;	# 14	    protein_Venus
-# #
-# # 	# degradation mods -
-# # 	0.02 	    ;	# 16	    mRNA_GntR
-# # 	0.86	    ;	# 17	    mRNA_Venus
-# # 	0.24 	    ;	# 18	    protein_GntR
-# # 	3.08 	    ;	# 19	    protein_Venus
-# # 	27.7 	    ;	# 20	    protein_sigma_70
-# #
-# # 	 # w -
-# # 	 9.22           ;   # 21    translation capacity half-life
-# #
-# # 	# KL value -
-# # 	228.0         ;   # 22    KL in muM
-# # ];
 
 # setup -
 path_to_data_dir = "$(pwd())"
@@ -694,7 +605,7 @@ RA = 0
 ##
 
 # execute -
-number_of_trials = 8 #anything above 8+ it crashes- occasionally crashes out midway, but working on that- but because of model parameters and not because of arithmetic
+number_of_trials = 9
 for trial_index = 1:number_of_trials
 
     global pV
@@ -703,7 +614,7 @@ for trial_index = 1:number_of_trials
     global RA
  
 
-   # do a local step - #it gets faltered over here- 
+   # do a local step - 
     if (mod(trial_index,2) == 0)
 
         # find the lowest score pV -
@@ -712,12 +623,11 @@ for trial_index = 1:number_of_trials
         pV_best = PC[:,best_p_index]
 
         # local refine -
-        pV = local_refinement_step(path_to_data_dir, pV_best; iteration_max=20)
+        pV = local_refinement_step(path_to_data_dir, pV_best; iteration_max=35)
     end
 
-
     # main -
-    (EC,PC,RA) = main(path_to_data_dir, vec(pV); rank_cutoff=4,maximum_number_of_iterations=20)
+    (EC,PC,RA) = main(path_to_data_dir, vec(pV); rank_cutoff=4,maximum_number_of_iterations=35)
 
     # dump results to disk -
     fname = "./poets_ensemble_W_test/RA_T$(trial_index).dat"

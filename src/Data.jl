@@ -130,19 +130,19 @@ function build_data_dictionary(time_span::Tuple{Float64,Float64,Float64}, path_t
 	binding_parameter_dictionary["n_S70_RNAP_GntR"]=1.0
 	binding_parameter_dictionary["K_S70_RNAP_GntR"]=0.05#I used Abhi's work for setting initial guess, only this is in nM
 	binding_parameter_dictionary["n_S70_RNAP_S28"]=1.0
-	binding_parameter_dictionary["K_S70_RNAP_S28"]=1.0 #this will also be in uM because of sigma 70 concentration
+	binding_parameter_dictionary["K_S70_RNAP_S28"]=1.0 #this will also be in nM because of sigma 70 concentration
 	binding_parameter_dictionary["n_S70_RNAP_AS28"]=1.0
-    binding_parameter_dictionary["K_S70_RNAP_AS28"]=0.05
+    binding_parameter_dictionary["K_S70_RNAP_AS28"]=0.5
 	binding_parameter_dictionary["n_S70_RNAP_Venus"]=1.0
-    binding_parameter_dictionary["K_S70_RNAP_Venus"]=0.05
+    binding_parameter_dictionary["K_S70_RNAP_Venus"]=0.5
 	binding_parameter_dictionary["n_GntR_mP70_AS28"]=1.0 #binds to mP70
-	binding_parameter_dictionary["K_GntR_mP70_AS28"]=0.05 #say 
+	binding_parameter_dictionary["K_GntR_mP70_AS28"]=0.5 #say 
 	binding_parameter_dictionary["n_GntR_mP70_Venus"]=1.0 #binds to mP70
-	binding_parameter_dictionary["K_GntR_mP70_Venus"]=0.05 
+	binding_parameter_dictionary["K_GntR_mP70_Venus"]=0.5 
 	binding_parameter_dictionary["n_S28_RNAP_BFP"]=1.0 
 	binding_parameter_dictionary["K_S28_RNAP_BFP"]=0.05
-	binding_parameter_dictionary["n_AS28_S28_BFP"]=1.0
-	binding_parameter_dictionary["K_AS28_S28_BFP"]=0.05 
+	binding_parameter_dictionary["n_AS28_S28_BFP"]=2.5 #WAS 1 AND 50
+	binding_parameter_dictionary["K_AS28_S28_BFP"]=10 
 
 	
 	# Alias the control function parameters -
@@ -154,11 +154,11 @@ function build_data_dictionary(time_span::Tuple{Float64,Float64,Float64}, path_t
 	control_parameter_dictionary["W_S70_RNAP_mP70"] = 1 #based on p fit, was 0.25
 	control_parameter_dictionary["W_S28_RNAP_P28"] = 1 #
 	control_parameter_dictionary["W_GntR_mP70"] = 1 #
-	control_parameter_dictionary["W_GntR_gluconate_protein"]=1 #
-	control_parameter_dictionary["W_AS28_S28_P28"] = 1 
+	control_parameter_dictionary["W_AS28_S28_P28"] = 1 #WAS 1 
+	
 	# D- Gluconate parameter values
 	gluconate_parameter_dictionary = Dict{String,Float64}()
-	gluconate_parameter_dictionary["gluconate_concentration"]=1E-3# units mM- should be 10mM for fittng the model (The range works from 1e3mM to 1e-3mM)
+	gluconate_parameter_dictionary["gluconate_concentration"]=1e1 # units mM- should be 1e-5 mM for fittng the model (The range works from 1e3mM to 1e-5mM)
 	gluconate_parameter_dictionary["n_gluconate_GntR"] = 1 #units are in mM
 	gluconate_parameter_dictionary["K_gluconate_GntR"] = 1 # mM
 	gluconate_parameter_dictionary["Protein_sigma_70"] = 3.5 #nM units
@@ -177,11 +177,11 @@ function build_data_dictionary(time_span::Tuple{Float64,Float64,Float64}, path_t
 		1.0	;	# 8	mRNA_AS28
 		1.0 ;   # 9 mRNA_Venus
 		1.0 ;   #10 mRNA_BFP
-		2.5	;	#11	protein_GntR
-		2.0	;	#12	protein_S28
-		2.0	;	#13	protein_AS28
-		2.0 ;   #14 protein_Venus
-		2.0 ;   #15 protein_BFP #Was 1.5
+		8.0	;	#11	protein_GntR
+		8.0	;	#12	protein_S28
+		8.0	;	#13	protein_AS28 INCREASING THIS VALUE REDUCES THE VALUE/RANGE OF ACTOR3/Simulation val
+		9.0 ;   #14 protein_Venus
+		9.0 ;   #15 protein_BFP #Was 1.5
 	]
 
 
@@ -199,9 +199,9 @@ function build_data_dictionary(time_span::Tuple{Float64,Float64,Float64}, path_t
 		1.0	;	# 10 mRNA_BFP
 		12.0	;	# 11 protein_GntR
 		10.0	;	# 12 protein_S28
-		10.0	;	# 13 protein_AS28
-		2.0	;	# 14 protein_Venus
-		1.0	;	# 15 protein_BFP
+		8.0	;	# 13 protein_AS28 # Decreasing this value increases the actor3 range of values and broadens it. - basically increases the sim value
+		20.0	;	# 14 protein_Venus
+		20.0	;	# 15 protein_BFP
 	]
 
 	
@@ -224,7 +224,6 @@ function build_data_dictionary(time_span::Tuple{Float64,Float64,Float64}, path_t
 		"W_S70_RNAP_mP70"; #5
 		"W_S70_RNAP_P28" ;#6
 		"W_GntR_mP70" ;#7
-		"W_GntR_gluconate_protein"; #8NEW
 		"W_AS28_S28_P28"; #9
 		"n_S70_RNAP_GntR"; #10
 		"K_S70_RNAP_GntR";#11
@@ -280,12 +279,6 @@ function build_data_dictionary(time_span::Tuple{Float64,Float64,Float64}, path_t
 	data_dictionary["half_life_translation_capacity"] = 8.0	 # hr
 	data_dictionary["base_line_weight"] = (1.0/1.0)
 
-	#ABHI ADDED MORE parameters
-	data_dictionary["transcription_capacity_delay"] = 6.0  #WAS 6 initially
-	data_dictionary["transcription_capacity_slope"] = 0.5
-
-	data_dictionary["translation_capacity_delay"] = 1.0
-	data_dictionary["translation_capacity_slope"] = 0.5
 
 	return data_dictionary
 end

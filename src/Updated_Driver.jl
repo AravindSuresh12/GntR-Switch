@@ -23,11 +23,11 @@
 # ----------------------------------------------------------------------------------- #
 
 # include -
-include("Include.jl")
+#include("Include.jl")- for now, no need
 
 # Script to solve the balance equations -
 time_start = 0.0
-time_stop = 16.0
+time_stop = 10.0
 time_step_size = 0.01
 
 # what is the host_type?
@@ -44,8 +44,7 @@ R = data_dictionary["R"]
 T_K = data_dictionary["T_K"]
 # compute W -
 
-PC = readdlm("./poets_ensemble_W_test/PC_T5.dat")
-# PC = readdlm("Ensemble-Optim.dat")
+PC = readdlm("./poets_ensemble_W_test/PC_T3.dat")
 poets_params = PC[:,1]
 
 # Update the data dictionary
@@ -57,28 +56,27 @@ control_parameter_dictionary["W_S70_RNAP_P70"] = exp(-1*(poets_params[4]))
 control_parameter_dictionary["W_S70_RNAP_mP70"] = exp(-1*(poets_params[5]))
 control_parameter_dictionary["W_S28_RNAP_P28"] = exp(-1*(poets_params[6]))
 control_parameter_dictionary["W_GntR_mP70"] = exp(-1*(poets_params[7]))
-control_parameter_dictionary["W_GntR_gluconate_protein"] = exp(-1*(poets_params[8]))
-control_parameter_dictionary["W_AS28_S28_P28"] = exp(-1*(poets_params[9]))
+control_parameter_dictionary["W_AS28_S28_P28"] = exp(-1*(poets_params[8]))
 
 data_dictionary["control_parameter_dictionary"] = control_parameter_dictionary
 
     binding_parameter_dictionary = data_dictionary["binding_parameter_dictionary"]
-    binding_parameter_dictionary["n_S70_RNAP_GntR"]=poets_params[10]
-	binding_parameter_dictionary["K_S70_RNAP_GntR"]=poets_params[11]
-	binding_parameter_dictionary["n_S70_RNAP_S28"]=poets_params[12]
-	binding_parameter_dictionary["K_S70_RNAP_S28"]=poets_params[13]
-	binding_parameter_dictionary["n_S70_RNAP_AS28"]=poets_params[14]
-    binding_parameter_dictionary["K_S70_RNAP_AS28"]=poets_params[15]
-	binding_parameter_dictionary["n_S70_RNAP_Venus"]=poets_params[16]
-    binding_parameter_dictionary["K_S70_RNAP_Venus"]=poets_params[17]
-	binding_parameter_dictionary["n_GntR_mP70_AS28"]=poets_params[18]
-	binding_parameter_dictionary["K_GntR_mP70_AS28"]=poets_params[19]
-	binding_parameter_dictionary["n_GntR_mP70_Venus"]=poets_params[20]
-	binding_parameter_dictionary["K_GntR_mP70_Venus"]=poets_params[21]
-	binding_parameter_dictionary["n_S28_RNAP_BFP"]=poets_params[22]
-	binding_parameter_dictionary["K_S28_RNAP_BFP"]=poets_params[23]
-	binding_parameter_dictionary["n_AS28_S28_BFP"]=poets_params[24]
-	binding_parameter_dictionary["K_AS28_S28_BFP"]=poets_params[25]
+    binding_parameter_dictionary["n_S70_RNAP_GntR"]=poets_params[9]
+	binding_parameter_dictionary["K_S70_RNAP_GntR"]=poets_params[10]
+	binding_parameter_dictionary["n_S70_RNAP_S28"]=poets_params[11]
+	binding_parameter_dictionary["K_S70_RNAP_S28"]=poets_params[12]
+	binding_parameter_dictionary["n_S70_RNAP_AS28"]=poets_params[13]
+    binding_parameter_dictionary["K_S70_RNAP_AS28"]=poets_params[14]
+	binding_parameter_dictionary["n_S70_RNAP_Venus"]=poets_params[15]
+    binding_parameter_dictionary["K_S70_RNAP_Venus"]=poets_params[16]
+	binding_parameter_dictionary["n_GntR_mP70_AS28"]=poets_params[17]
+	binding_parameter_dictionary["K_GntR_mP70_AS28"]=poets_params[18]
+	binding_parameter_dictionary["n_GntR_mP70_Venus"]=poets_params[19]
+	binding_parameter_dictionary["K_GntR_mP70_Venus"]=poets_params[20]
+	binding_parameter_dictionary["n_S28_RNAP_BFP"]=poets_params[21]
+	binding_parameter_dictionary["K_S28_RNAP_BFP"]=poets_params[22]
+	binding_parameter_dictionary["n_AS28_S28_BFP"]=poets_params[23]
+	binding_parameter_dictionary["K_AS28_S28_BFP"]=poets_params[24]
 
 data_dictionary["binding_parameter_dictionary"] = binding_parameter_dictionary
 
@@ -88,16 +86,16 @@ time_constant_modifier_array = [
     0.0							;	# 3	AS28
     0.0                         ;   # 4 Venus
     0.0                         ;   # 5 BFP
-    poets_params[26]            ;  #  6 mRNA GntR
-    poets_params[27]            ;  #  7 mRNA S28
-    poets_params[28]            ;  #  8 mRNA AS28
-    poets_params[29]            ;  #9 mRNA Venus
-    poets_params[30]            ; #10 mRNA BFP
-    poets_params[31]            ;  #11 Protein GntR
-    poets_params[32]            ; #12 Protein S28
-    poets_params[33]            ; #13 Protein AS28
-    poets_params[34]            ; #14 Protein Venus
-    poets_params[35]            ; #15 Protein BFP
+    poets_params[25]            ;  #  6 mRNA GntR
+    poets_params[26]            ;  #  7 mRNA S28
+    poets_params[27]            ;  #  8 mRNA AS28
+    poets_params[28]            ;  #9 mRNA Venus
+    poets_params[29]            ; #10 mRNA BFP
+    poets_params[30]            ;  #11 Protein GntR
+    poets_params[31]            ; #12 Protein S28
+    poets_params[32]            ; #13 Protein AS28
+    poets_params[33]            ; #14 Protein Venus
+    poets_params[34]            ; #15 Protein BFP
 ]
 
 data_dictionary["time_constant_modifier_array"] = time_constant_modifier_array
@@ -108,42 +106,33 @@ degradation_modifier_array = [
     0.0							;	# 3	AS28
     0.0                         ;   # 4 Venus
     0.0                         ;   # 5 BFP
-    poets_params[36]            ;  #  6 mRNA GntR
-    poets_params[37]            ;  #  7 mRNA S28
-    poets_params[38]            ;  #  8 mRNA AS28
-    poets_params[39]            ;  #9 mRNA Venus
-    poets_params[40]            ; #10 mRNA BFP
-    poets_params[41]            ;  #11 Protein GntR
-    poets_params[42]            ; #12 Protein S28
-    poets_params[43]            ; #13 Protein AS28
-    poets_params[44]        ;     #14 Protein Venus
-    poets_params[45]            ; #15 Protein BFP
+    poets_params[35]            ;  #  6 mRNA GntR
+    poets_params[36]            ;  #  7 mRNA S28
+    poets_params[37]            ;  #  8 mRNA AS28
+    poets_params[38]            ;  #9 mRNA Venus
+    poets_params[39]            ; #10 mRNA BFP
+    poets_params[40]            ;  #11 Protein GntR
+    poets_params[41]            ; #12 Protein S28
+    poets_params[42]            ; #13 Protein AS28
+    poets_params[43]        ;     #14 Protein Venus
+    poets_params[44]            ; #15 Protein BFP
     
 ]
 
 data_dictionary["degradation_modifier_array"] = degradation_modifier_array
 
 # update the translation time -
-data_dictionary["half_life_translation_capacity"] = poets_params[46]
+data_dictionary["half_life_translation_capacity"] = poets_params[45]
 
 biophysical_constants_dictionary = data_dictionary["biophysical_constants_dictionary"]
-biophysical_constants_dictionary["translation_saturation_constant"] = poets_params[47]
+biophysical_constants_dictionary["translation_saturation_constant"] = poets_params[46]
 data_dictionary["biophysical_constants_dictionary"] = biophysical_constants_dictionary
 
 # gluconate GntR binding parameters
 gluconate_parameter_dictionary = data_dictionary["gluconate_parameter_dictionary"]
-gluconate_parameter_dictionary["n_gluconate_GntR"] = poets_params[48]
-gluconate_parameter_dictionary["K_gluconate_GntR"] = poets_params[49]
+gluconate_parameter_dictionary["n_gluconate_GntR"] = poets_params[47]
+gluconate_parameter_dictionary["K_gluconate_GntR"] = poets_params[48]
 data_dictionary["gluconate_parameter_dictionary"] = gluconate_parameter_dictionary
-
-# update the transcription capacity parameters
-data_dictionary["transcription_capacity_delay"] = poets_params[50]
-data_dictionary["transcription_capacity_slope"] = poets_params[51]
-
-# update the translation capacity parameters
-data_dictionary["translation_capacity_delay"] = poets_params[52]
-data_dictionary["translation_capacity_slope"] = poets_params[53]
-
 
 species_symbol_type_array = data_dictionary["species_symbol_type_array"]
 protein_coding_length_array = data_dictionary["protein_coding_length_array"]
@@ -175,54 +164,22 @@ data_dictionary["dilution_degradation_matrix"] = dilution_degradation_matrix
 p1 = Plots.plot(T,X[:,14], label = "Venus_Model_Prot",xlabel="Time (hr)",ylabel = "Concentration (μM)",linewidth=3)
 
 # plot experimental data Venus
-prot_data = CSV.read("./data/Protein_Data_Venus.csv",DataFrame)
-time = prot_data[!,"time(h)"]
-Venus = prot_data[!,"mean_10mM"]
-stdev_prot = prot_data[!,"sd_10mM"]
+prot_data = CSV.read("./data/FINAL_FULL_MODEL_FIT_00001mM.csv",DataFrame)
+time = prot_data[!,"Time(h)"]
+Venus = prot_data[!,"Venus_uM"]
+stdev_prot = prot_data[!,"Venus_uM_STDERR"]
 
 p2 = Plots.scatter!(time,Venus,label = "Venus_Exp_Prot",legend = :topleft,markercolor = "black", markersize = 3,yerror=stdev_prot)
 
-# # # plot experimental data BFP
+# # # plot experimental data BFP 
 
-prot_data2 = CSV.read("./data/Protein_Data_BFP.csv",DataFrame)
-time = prot_data2[!,"time(h)"]
-BFP = prot_data2[!,"mean_10mM"]
-stdev_prot1 = prot_data[!,"sd_10mM"]
+prot_data2 = CSV.read("./data/FINAL_FULL_MODEL_FIT_00001mM.csv",DataFrame)
+time = prot_data2[!,"Time(h)"]
+BFP = prot_data2[!,"BFP_uM"]
+stdev_prot1 = prot_data[!,"BFP_uM_STDERR"]
 
 p3 = Plots.plot!(T,X[:,15], label = "BFP_Model_Prot",xlabel="Time (hr)",ylabel = "Concentration (μM)",linewidth=3)
 
 p4 = Plots.scatter!(time,BFP,label = "BFP_Exp_Prot",legend = :topleft,markercolor = "blue", markersize = 3,yerror=stdev_prot1)
 
-
-# # Plot mRNA
-# # plot sim data
-# p2 = Plots.plot(T,1000*X[:,5], label = "Venus_Model_mRNA",xlabel="Time (hr)",ylabel = "Concentration (nM)",linewidth=3)
-
-# # plot exp data
-# mRNA_data = CSV.read("mRNA_data.csv",DataFrame)
-# time = mRNA_data[!,"Avg Time (hr)"]
-# Venus = mRNA_data[!,"<VVOE + GntR_Ecoli + Gluconate>"]
-# stdev_mRNA = mRNA_data[!,"SD1"]
-
-# p2 = Plots.scatter!(time,Venus,label = "Venus_Exp_mRNA",legend = :topright,marker = "o",markercolor = "black", markersize = 3,yerror=stdev_mRNA)
-
-
-# p3 = Plots.plot(T,1000*X[:,4],xlabel="Time (hr)",ylabel = "Concentration (nM)",linewidth=3)
-
-# # plot exp data
-# mRNA_data = CSV.read("mRNA_data.csv",DataFrame)
-# time = mRNA_data[!,"Avg Time (hr)"]
-# GntR = mRNA_data[!,"GntR1"]
-# stdev_mRNA = mRNA_data[!,"SD_1"]
-
-# p3 = Plots.scatter!(time,GntR,legend = :topright,marker = "o",markercolor = "black", markersize = 3,yerror=stdev_mRNA)
-
-# p4 = Plots.plot(T,X[:,7], label = "GntR_Model_Prot",xlabel="Time (hr)",ylabel = "Concentration (µM)",linewidth=3)
-
-# Plots.plot(p2, p1, p3, p4, layout = (2,2))
-
-# Plots.plot(T,X[:,10])
-# # X[1:10:end,10]
-# # Plots.plot(p3,p4,layout=(1,2))
-Plots.savefig("./Images/Conc_profile_GoodFt-PC5.pdf")
-
+Plots.savefig("Fig_PC.pdf")
