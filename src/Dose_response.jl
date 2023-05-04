@@ -166,30 +166,28 @@ new_array_Venus=[]
 
 for element in gluc_conc_array
     local gluconate_parameter_dictionary["gluconate_concentration"]=element   
-    (T,X) = SolveBalances(time_start,time_stop,time_step_size,data_dictionary)
+    local (T,X) = SolveBalances(time_start,time_stop,time_step_size,data_dictionary)
     Venus_ele= X[end,14]
     BFP_ele=  X[end,15]
     push!(new_array_Venus,Venus_ele)
     push!(new_array_BFP,BFP_ele)
 end
 
-new_array_BFP
-#p1= Plots.plot!(log10.(gluc_conc_array),new_array_Venus)
+new_array_BFP #contains the simulated values of BFP_array
+new_array_Venus #contains simulated values of BFP
+
+
+p1= Plots.plot(log10.(gluc_conc_array),new_array_Venus, xlabel="Gluc_Conc (log(mM))", ylabel="Protein_concentration (uM)", label="Venus_simulated", legend= :topright)
+
 # plot experimental data Venus
-# prot_data = CSV.read("./data/FINAL_FULL_MODEL_FIT_00001mM.csv",DataFrame)
-# time = prot_data[!,"Time(h)"]
-# Venus = prot_data[!,"Venus_uM"]
-# stdev_prot = prot_data[!,"Venus_uM_STDERR"]
+prot_data = CSV.read("./data/FINAL_FULL_DOSE_RESPONSE_POOLED.csv",DataFrame)
+Venus = prot_data[!,"Venus_uM"]
+stdev_Venus = prot_data[!,"Venus_uM_STDERR"]
+BFP=prot_data[!,"BFP_uM"]
+stdev_BFP = prot_data[!,"BFP_uM_STDERR"]
 
-# p2 = Plots.scatter!(time,Venus,label = "Venus_Exp_Prot",legend = :topleft,markercolor = "black", markersize = 3,yerror=stdev_prot)
+p2 = Plots.scatter!(log10.(gluc_conc_array),Venus,label = "Venus_Exp_Prot",legend = :topright,markercolor = "black", markersize = 3,yerror=stdev_Venus)
 
+p3= Plots.plot!(log10.(gluc_conc_array),new_array_BFP, label="BFP_simulated", legend= :topright)
 
-# prot_data2 = CSV.read("./data/FINAL_FULL_MODEL_FIT_00001mM.csv",DataFrame)
-# time = prot_data2[!,"Time(h)"]
-# BFP = prot_data2[!,"BFP_uM"]
-# stdev_prot1 = prot_data[!,"BFP_uM_STDERR"]
-
-# p3 = Plots.plot!(T,X[:,15], label = "BFP_Model_Prot",xlabel="Time (hr)",ylabel = "Concentration (μM)",linewidth=3)
-
-# p4 = Plots.scatter!(time,BFP,label = "BFP_Exp_Prot",legend = :topleft,markercolor = "blue", markersize = 3,yerror=stdev_prot1)
-
+p4= Plots.scatter!(log10.(gluc_conc_array),Venus,label = "Venus_Exp_Prot",legend = :topright,markercolor = "black", markersize = 3,yerror=stdev_BFP)

@@ -630,11 +630,11 @@ for trial_index = 1:number_of_trials
     (EC,PC,RA) = main(path_to_data_dir, vec(pV); rank_cutoff=4,maximum_number_of_iterations=35)
 
     # dump results to disk -
-    fname = "./poets_ensemble_W_test/RA_T$(trial_index).dat"
+    fname = "./simulated/poets_ensemble/RA_T$(trial_index).dat"
     writedlm(fname,RA)
-    fname = "./poets_ensemble_W_test/EC_T$(trial_index).dat"
+    fname = "./simulated/poets_ensemble/EC_T$(trial_index).dat"
     writedlm(fname,EC)
-    fname = "./poets_ensemble_W_test/PC_T$(trial_index).dat"
+    fname = "./simulated/poets_ensemble/PC_T$(trial_index).dat"
     writedlm(fname,PC)
 
     @show trial_index
