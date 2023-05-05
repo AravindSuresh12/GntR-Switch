@@ -44,7 +44,7 @@ R = data_dictionary["R"]
 T_K = data_dictionary["T_K"]
 # compute W -
 
-PC = readdlm("./poets_ensemble_W_test/PC_T3.dat")
+PC = readdlm("./poets_ensemble_W_test/PC_T1.dat")
 poets_params = PC[:,1]
 
 # Update the data dictionary

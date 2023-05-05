@@ -76,7 +76,7 @@ function calculate_transcription_control_array(t::Float64,x::Array{Float64,1},da
 	K_GntR_mP70_Venus=binding_parameter_dictionary["K_GntR_mP70_Venus"]
 	n_S28_RNAP_BFP=binding_parameter_dictionary["n_S28_RNAP_BFP"] 
 	K_S28_RNAP_BFP=binding_parameter_dictionary["K_S28_RNAP_BFP"]
-	n_AS28_S28_BFP=binding_parameter_dictionary["n_AS28_S28_BFP"]
+	Km_AS28_S28=binding_parameter_dictionary["Km_AS28_S28"]
 	K_AS28_S28_BFP=binding_parameter_dictionary["K_AS28_S28_BFP"] 
 
 
@@ -113,13 +113,9 @@ function calculate_transcription_control_array(t::Float64,x::Array{Float64,1},da
 
 	
 
-	actor_set2= [
-	protein_GntR
-	]
+	actor_set2= [protein_GntR]'
 
 	actor=prod(protein_GntR)
-
-
 
  #################################################################################################################################################
 	#Control Terms
@@ -135,7 +131,8 @@ function calculate_transcription_control_array(t::Float64,x::Array{Float64,1},da
 	term_den= term_den_1+ term_den_2
 
 	f_S70_RNAP_GntR=  real(term_num/term_den)   
-	#print("the f value controlling actor is : $(f_S70_RNAP_GntR) \n")
+
+
 	
 
 	num1= W_RNAP_P70 + W_S70_RNAP_P70*f_S70_RNAP_GntR
@@ -155,22 +152,9 @@ function calculate_transcription_control_array(t::Float64,x::Array{Float64,1},da
 	num2= W_RNAP_P70 + W_S70_RNAP_P70*f_S70_RNAP_S28 #because S28 gene is under the control of P70 promoter
 	den2= 1+ W_RNAP_P70 + W_S70_RNAP_P70*f_S70_RNAP_S28
 
+
 	control_array[2]= num2/den2
 
-	######################################
-
-	#3 Control function for AS28 production- since its under control of mP70-GntR
-
-	
-	#f function which talks about Gluconate binding on to GntR 
-
-	#two stuffs bind on to mP70 containing AS28 gene- One is GntR protein, second one is S70-RNAP complex
-
-	#the f function which talks about GntR binding with mP70 in AS28 
-
-#assume you remove all the real/complex things
-
-#actor changes properly 
 
     A=abs(actor)^abs(n_GntR_mP70_AS28) #THE error point 
 	B2=real(abs(K_GntR_mP70_AS28)^abs(n_GntR_mP70_AS28))
@@ -178,17 +162,10 @@ function calculate_transcription_control_array(t::Float64,x::Array{Float64,1},da
 	B=A+B2
 
 
-	f_GntR_mP70_AS28= real(abs(A/B)) #GntR binds to the mP70 promoter which is upstream of as28 gene 
+	f_GntR_mP70_AS28= real(abs(A/B)) 
 
-	#print("For gluconate value:   $(Gluc_conc), the f value is:   $(f_GntR_mP70_AS28) \n")
-
-	#The f function which talks about S70-RNAP complex binding with mP70 on AS28 gene
-
-	#print("The value of actor in this case:",actor,"\n")
 	f_S70_RNAP_AS28= (actors ^(n_S70_RNAP_AS28)) / ( actors ^abs(n_S70_RNAP_AS28) + abs(K_S70_RNAP_AS28) ^abs(n_S70_RNAP_AS28))
-	
 
-	#print("The value of f_gluc is $(f_gluc_GntR), while the value for f_GntR_mP70_AS28 is:  $(f_GntR_mP70_AS28)   for glucose concentration $(Gluc_conc) \n")
 	a1=W_RNAP_mP70 + W_S70_RNAP_mP70*f_S70_RNAP_AS28
 	a2=W_GntR_mP70*(f_gluc_GntR)*(f_GntR_mP70_AS28)
 
@@ -198,28 +175,15 @@ function calculate_transcription_control_array(t::Float64,x::Array{Float64,1},da
 
 	control_array[3]=num3/den3
 
-
-	#print("The a1 array is $(a1)","\n")
-	#print("The a2 array is $(100*a2)","\n")
-	#print("The sum of a1 and a2 only terms come to: $(a1+100*a2)", "\n")
-	#print("The control array 3 term is $(control_array[3])" ,"\n")
-
 	######################################
 	
 	##4 Control function for Venus Production
 
-	#f function which talks about Gluconate binding on to GntR 
-
-	#the f function which talks about GntR binding with mP70 
-
+	
 	A4= abs(actor) ^ abs(n_GntR_mP70_Venus)
 	B4= real(abs(actor) ^ abs(n_GntR_mP70_Venus) + abs(K_GntR_mP70_Venus) ^ abs(n_GntR_mP70_Venus))
 
-    f_GntR_mP70_Venus= A4/B4 #(actor ^ n_GntR_mP70_Venus) /( actor ^ n_GntR_mP70_Venus + K_GntR_mP70_Venus ^ n_GntR_mP70_Venus ) 
-
-	#two stuffs bind on to mP70 containing Venus gene- One is GntR protein, second one is S70-RNAP complex
-
-	#The f function which talks about S70-RNAP complex binding with mP70 for downstream Venus gene
+    f_GntR_mP70_Venus= A4/B4 
 
 	f_S70_RNAP_Venus= (actors ^abs(n_S70_RNAP_Venus)) / ( actors ^ abs(n_S70_RNAP_Venus) + abs(K_S70_RNAP_Venus) ^ abs(n_S70_RNAP_Venus)) 
 
@@ -242,16 +206,21 @@ function calculate_transcription_control_array(t::Float64,x::Array{Float64,1},da
 		
 	actor3= prod(actor_set3)
 
-	#print("The potential value range of actor_set3's f AS28 is $(actor3)","\n")
 
-	A3= abs(K_AS28_S28_BFP)^abs(n_AS28_S28_BFP)
-	term1=abs(actor3)^abs(n_AS28_S28_BFP) #potential error
-	term2= abs(K_AS28_S28_BFP)^abs(n_AS28_S28_BFP)
-	B3= real(term1+ term2)
+	#INHIBITED S28 PARTICIPATES IN THIS 
 
-	f_AS28_S28_BFP= real(abs(A3/B3)) 
+	protein_S28=protein_S28
 
-	protein_S28= (1-f_AS28_S28_BFP)*protein_AS28 
+	actor_set5= [protein_S28]'
+
+	actor3_4= prod(actor_set5)
+
+	a= (1 + (actor3/K_AS28_S28_BFP))
+	Km=Km_AS28_S28
+	f_den= actor3_4 /(a*Km + actor3_4) 
+	f_AS28_S28_BFP= f_den 
+
+	protein_S28= (1-f_AS28_S28_BFP)*protein_AS28 #free S28
 	
 	actor_set4= [protein_S28]'
 
@@ -260,28 +229,22 @@ function calculate_transcription_control_array(t::Float64,x::Array{Float64,1},da
 	term_num4= real(abs(actor4)^ abs(n_S28_RNAP_BFP))
 	term_den4= real(abs(actor4))^abs(n_S28_RNAP_BFP) + abs(K_S28_RNAP_BFP)^abs(n_S28_RNAP_BFP)
 
-	f_S28_RNAP_BFP =term_num4/term_den4 #this will always be real
+	f_S28_RNAP_BFP =term_num4/term_den4 
 
 
 	num5= W_RNAP_P28 + W_S28_RNAP_P28 *f_S28_RNAP_BFP 
 
-	f_anti_S28_RNAP_BFP=(abs(actor3)^ abs(n_AS28_S28_BFP)) /( abs(actor3)^ abs(n_AS28_S28_BFP) + abs(K_AS28_S28_BFP) ^ abs(n_AS28_S28_BFP)) #as28 binds to s28
+	Factor=10
 
-	#print("The potential value range of actor_set3's f AS28 is $(f_anti_S28_RNAP_BFP))","\n")
-	Factor=8
-
-	den5= 1 + num5  + ((W_AS28_S28_P28)*(f_anti_S28_RNAP_BFP)*Factor)
-
-	#print("The value of num5 is $(num5)","\n") #from 0.99 to 0.99
-	#print("The value of the first two terms are is $(1+num5)","\n") #Varies from 1.90 to 1.99
-	#print("The W_F*factor function in denmoniator is, $((W_AS28_S28_P28)*(f_anti_S28_RNAP_BFP)*Factor)","\n") #varies from 4 to 35
-
+	den5= 1 + num5 + (Factor*W_AS28_S28_P28*(1-f_den))  #Only the free fraction after being bound by as28 is considered for repression/derepresion
 
 	control_array[5]= num5/den5 
 
+	#print("The control_array term is $(control_array[5])","\n")
+
 	# return -
 	return control_array
-end
+end 
 
 #
 # ----------------------------------------------------------------------------------- #

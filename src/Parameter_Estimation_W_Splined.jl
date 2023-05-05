@@ -48,7 +48,7 @@ function objective_function(parameter_guess_array,time_start,time_step_size,time
 	binding_parameter_dictionary["K_GntR_mP70_Venus"]=parameter_guess_array[20]
 	binding_parameter_dictionary["n_S28_RNAP_BFP"]=parameter_guess_array[21]
 	binding_parameter_dictionary["K_S28_RNAP_BFP"]=parameter_guess_array[22]
-	binding_parameter_dictionary["n_AS28_S28_BFP"]=parameter_guess_array[23]
+	binding_parameter_dictionary["Km_AS28_S28"]=parameter_guess_array[23]
 	binding_parameter_dictionary["K_AS28_S28_BFP"]=parameter_guess_array[24]
 
     model_data_dictionary["binding_parameter_dictionary"] = binding_parameter_dictionary
@@ -111,15 +111,6 @@ function objective_function(parameter_guess_array,time_start,time_step_size,time
 	gluconate_parameter_dictionary["n_gluconate_GntR"] = parameter_guess_array[47]
 	gluconate_parameter_dictionary["K_gluconate_GntR"] = parameter_guess_array[48]
 	model_data_dictionary["gluconate_parameter_dictionary"] = gluconate_parameter_dictionary
-
-    # update the transcription capacity parameters
-    #model_data_dictionary["transcription_capacity_delay"] = parameter_guess_array[49]
-    #model_data_dictionary["transcription_capacity_slope"] = parameter_guess_array[50]
-    
-    # update the translation capacity parameters
-    #model_data_dictionary["translation_capacity_delay"] = parameter_guess_array[51]
-    #model_data_dictionary["translation_capacity_slope"] = parameter_guess_array[52]
-
 
     # grab defaults -
     species_symbol_type_array = model_data_dictionary["species_symbol_type_array"]
@@ -363,9 +354,9 @@ function check_parameter_bounds(parameter_array)
 
         # binding parameters -
         1.0 10.0            ;   # 9     n_S70_RNAP_GntR
-        1e-2 100.0         ;   # 10     K_S70_RNAP_GntR
+        1e-3 10.0         ;   # 10     K_S70_RNAP_GntR
 		1.0 10.0            ;   # 11     n_S70_RNAP_S28
-        1e-2 100.0         ;   # 12     K_S70_RNAP_S28
+        1e-3 100.0         ;   # 12     K_S70_RNAP_S28
         1.0 10.0            ;   # 13     n_S70_RNAP_AS28
         1e-2 100.0        ;   # 14     K_S70_RNAP_AS28
         1.0 10.0            ;   # 15     n_S70_RNAP_Venus
@@ -376,8 +367,8 @@ function check_parameter_bounds(parameter_array)
         1e-3 100.0         ;   # 20    K_GntR_mP70_Venus
         1.0 3.0            ;   # 21     n_S28_RNAP_BFP
         1e-3 100.0         ;   # 22     K_S28_RNAP_BFP
-        1.0 3.0            ;   # 23    n_AS28_S28_BFP
-        1e-3 100.0         ;   # 24    K_AS28_S28_BFP
+        1e-3 1e2            ;   # 23    Km_AS28_S28
+        1e-3 1e2         ;   # 24    K_AS28_S28_BFP
 
 
         # time constants -
@@ -417,14 +408,6 @@ function check_parameter_bounds(parameter_array)
 
 		# K_gluconate_GntR-
 		0.1 100.0				; # 48 mM
-
-        # transcription capacity terms-
-        #0.0 12.0; #49 decay (hours)
-        #0.01 0.9; # 50 slope
-
-        #translation capacity terms-
-        #0.0 5.0; # 51 decay (hours)
-        #0.001 0.9; #52 slope
     ];
 	
     #parameter_array = pvec_bounds
@@ -517,20 +500,20 @@ end
 pvec_initial = [
 
 	# dG's - Kj/mol
-	4.0    	;   # 1     W_RNAP_P70- From Abhi Work of GntR Model- were initially 2.5 1.5 and 1 respectively, because for the model, it will be exp(-W)
-	4.0   	;   # 2     W_RNAP_P28 
-    4.0    ;   # 3     W_RNAP_mP70 
-    -2.5    ;   # 4     W_S70_RNAP_P70 
-    -2.5    ;   # 5     W_S70_RNAP_mP70, s70 should have more trouble binding to operator region
-    -2.0   ;   # 6     W_S28_RNAP_P28
-    -2.5    ;   # 7     W_GntR_mP70 - from Abhi Work of GntR model
-	-2.0    ;   # 8     W_AS28_S28_P28 -directly responsible for BFP
+	5.0    	;   # 1     W_RNAP_P70- From Abhi Work of GntR Model- were initially 2.5 1.5 and 1 respectively, because for the model, it will be exp(-W)
+	5.0   	;   # 2     W_RNAP_P28 
+    5.0    ;   # 3     W_RNAP_mP70 
+    -1.0    ;   # 4     W_S70_RNAP_P70 
+    -1.0    ;   # 5     W_S70_RNAP_mP70, s70 should have more trouble binding to operator region
+    -1.0   ;   # 6     W_S28_RNAP_P28
+    -1.0    ;   # 7     W_GntR_mP70 - from Abhi Work of GntR model
+	-1.0    ;   # 8     W_AS28_S28_P28 -directly responsible for BFP
 
 	# binding parameters -
 	2.0            ;   # 9     n_S70_RNAP_GntR all n were 1 and K were 30
-	100       ;   # 10         K_S70_RNAP_GntR
+	1e-3       ;   # 10         K_S70_RNAP_GntR, was 100
 	2.0            ;   # 11     n_S70_RNAP_S28
-	100         ;   # 12     K_70_RNAP_S28 was 10
+	1e-3         ;   # 12     K_70_RNAP_S28 was 100
     2            ;   # 13     n_S70_RNAP_AS28
 	15         ;   # 14     K_S70_RNAP_AS28
 	2            ;   # 15     n_S70_RNAP_Venus
@@ -540,9 +523,9 @@ pvec_initial = [
     2            ;  # 19     n_GntR_mP70_Venus
     1.5         ;   # 20    K_GntR_mP70_Venus
     2       ;   #21 n_S28_RNAP_BFP
-    1      ;   #22 K_S28_RNAP_BFP assuming the last for values to be 1 instead of 2
-    2.5       ;   #23 n_AS28_S28_BFP
-    10    ;   #24 K_AS28_S28_BFP, was 2 and 50 for poet running 
+    1      ;   #22 K_S28_RNAP_BFP assuming the last for values to be 2 instead of 1
+    1       ;   #23 Km_AS28_S28_BFP
+    1    ;   #24 K_AS28_S28_BFP, was 2 and 50 for poet running 
 
 	# time constants - 
 	1.0         ;	#25	        #mRNA_GntR
@@ -551,11 +534,11 @@ pvec_initial = [
 	1.0         ;	# 28	    mRNA_Venus
     1.0         ;   # 29        mRNA_BFP
 
-	1.0          ;	# 30	    protein_GntR Changing from 15, 1.2, 1.2, 0.8 , 0.8
+	1.0          ;	# 30	    protein_GntR
 	1.2         ;	# 31	    protein_S28
     1.2         ;   # 32	    protein_AS28
-    0.8         ;	# 33	    protein_Venus changed from 
-    0.8         ;   # 34	    protein_BFP
+    1.0         ;	# 33	    protein_Venus changed from 
+    1.0         ;   # 34	    protein_BFP
     
 
 	# degradation mods -
@@ -565,11 +548,11 @@ pvec_initial = [
 	1.0         ;	# 38	    mRNA_Venus
     1.0         ;   # 39        mRNA_BFP
 
-    10.0          ;	# 40	    protein_GntR 
-	1.2         ;	# 41	    protein_S28
-    1.2         ;   # 42	   protein_AS28-changed from 1 to 1.2 and 0.6 to 0.8
-    0.8         ;	# 43	    protein_Venus Changed from 8,7 to 9.,9
-    0.8         ;   # 44	    protein_BFP
+    15.0          ;	# 40	    protein_GntR 
+	1.0         ;	# 41	    protein_S28
+    1.0         ;   # 42	   protein_AS28-changed from 1 to 1.2 and 0.6 to 0.8
+    1.0         ;	# 43	    protein_Venus Changed from 8,7 to 9.,9
+    1.0         ;   # 44	    protein_BFP
 
 
 	 # w -
@@ -605,7 +588,7 @@ RA = 0
 ##
 
 # execute -
-number_of_trials = 9
+number_of_trials = 2
 for trial_index = 1:number_of_trials
 
     global pV
@@ -630,11 +613,11 @@ for trial_index = 1:number_of_trials
     (EC,PC,RA) = main(path_to_data_dir, vec(pV); rank_cutoff=4,maximum_number_of_iterations=35)
 
     # dump results to disk -
-    fname = "./simulated/poets_ensemble/RA_T$(trial_index).dat"
+    fname = "./poets_ensemble_W_test/RA_T$(trial_index).dat"
     writedlm(fname,RA)
-    fname = "./simulated/poets_ensemble/EC_T$(trial_index).dat"
+    fname = "./poets_ensemble_W_test/EC_T$(trial_index).dat"
     writedlm(fname,EC)
-    fname = "./simulated/poets_ensemble/PC_T$(trial_index).dat"
+    fname = "./poets_ensemble_W_test/PC_T$(trial_index).dat"
     writedlm(fname,PC)
 
     @show trial_index

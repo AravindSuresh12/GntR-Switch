@@ -227,10 +227,10 @@ function main(path_to_ensemble_file::String,index)
 end
 
 # setup paths -
-path_to_ensemble_file = "./poets_ensemble_W_test/PC_T5.dat"
-
+path_to_ensemble_file = "./poets_ensemble_W_test/PC_T8.dat"
+ 
 # compute a sensitivity array for the AUC of each species -
-species_index_array = [9 14 10 15] #only doing for Venus and BFP
+species_index_array = [9 14 15] #only doing for Venus and BFP- just try the 3 species ie mRNA Venus Protein Venus and Protein BFP, because we only have experimental data for those three. 
 number_of_species = length(species_index_array)
 number_of_parameters = 53
 results_array = zeros(number_of_parameters,1)
@@ -243,9 +243,9 @@ for species_index in species_index_array
 
     # get the μ and σ^2
     mu = sensitivity_results.means_star
-    var = sensitivity_results.variances
+    var = sensitivity_results.variances #can also get skew
 
-    @show mu, var
+    #@show mu, var
 
     results_array = [results_array transpose(mu) transpose(var)]
 
