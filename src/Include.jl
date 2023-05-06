@@ -33,19 +33,21 @@ include("Balances.jl")
 include("Utility.jl")
 include("Error.jl")
 include("Main.jl")
+using Pkg           # pre-installed w/Julia
+
 
 installed_package_set = keys(Pkg.installed())
 
 ####No need
 using LinearAlgebra # pre-installed w/Julia
 using Statistics    # pre-installed w/Julia
-using Pkg           # pre-installed w/Julia
+# using Pkg           # pre-installed w/Julia
 
 
 # Do we have DifferentialEquations?
-if (in("DifferentialEquations",installed_package_set) == false)
-    Pkg.add(Pkg.PackageSpec(;name="DifferentialEquations", version="6.5.0"))
-end
+# if (in("DifferentialEquations",installed_package_set) == false)
+#     Pkg.add(Pkg.PackageSpec(;name="DifferentialEquations", version="6.5.0"))
+# end
 
 # Do we have DelimitedFiles?
 if (in("DelimitedFiles",installed_package_set) == false)
