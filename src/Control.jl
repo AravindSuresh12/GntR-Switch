@@ -76,7 +76,7 @@ function calculate_transcription_control_array(t::Float64,x::Array{Float64,1},da
 	K_GntR_mP70_Venus=binding_parameter_dictionary["K_GntR_mP70_Venus"]
 	n_S28_RNAP_BFP=binding_parameter_dictionary["n_S28_RNAP_BFP"] 
 	K_S28_RNAP_BFP=binding_parameter_dictionary["K_S28_RNAP_BFP"]
-	Km_AS28_S28=binding_parameter_dictionary["Km_AS28_S28"]
+	n_AS28_S28_BFP=binding_parameter_dictionary["n_AS28_S28_BFP"]
 	K_AS28_S28_BFP=binding_parameter_dictionary["K_AS28_S28_BFP"] 
 
 
