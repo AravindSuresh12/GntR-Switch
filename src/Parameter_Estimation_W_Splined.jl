@@ -48,7 +48,7 @@ function objective_function(parameter_guess_array,time_start,time_step_size,time
 	binding_parameter_dictionary["K_GntR_mP70_Venus"]=parameter_guess_array[20]
 	binding_parameter_dictionary["n_S28_RNAP_BFP"]=parameter_guess_array[21]
 	binding_parameter_dictionary["K_S28_RNAP_BFP"]=parameter_guess_array[22]
-	binding_parameter_dictionary["Km_AS28_S28"]=parameter_guess_array[23]
+	binding_parameter_dictionary["n_AS28_S28_BFP"]=parameter_guess_array[23]
 	binding_parameter_dictionary["K_AS28_S28_BFP"]=parameter_guess_array[24]
 
     model_data_dictionary["binding_parameter_dictionary"] = binding_parameter_dictionary
@@ -365,9 +365,9 @@ function check_parameter_bounds(parameter_array)
         1e-3 100.0         ;   # 18    K_GntR_mP70_AS28
         1.0 10.0            ;   # 19    n_GntR_mP70_Venus
         1e-3 100.0         ;   # 20    K_GntR_mP70_Venus
-        1.0 3.0            ;   # 21     n_S28_RNAP_BFP
+        1.0 10.0            ;   # 21     n_S28_RNAP_BFP
         1e-3 100.0         ;   # 22     K_S28_RNAP_BFP
-        1e-3 1e2            ;   # 23    Km_AS28_S28
+        1 10.0            ;   # 23    n_AS28_S28_BFP
         1e-3 1e2         ;   # 24    K_AS28_S28_BFP
 
 
@@ -524,7 +524,7 @@ pvec_initial = [
     1.5         ;   # 20    K_GntR_mP70_Venus
     2       ;   #21 n_S28_RNAP_BFP
     1      ;   #22 K_S28_RNAP_BFP assuming the last for values to be 2 instead of 1
-    1       ;   #23 Km_AS28_S28_BFP
+    1       ;   #23 n_AS28_S28_BFP
     1    ;   #24 K_AS28_S28_BFP, was 2 and 50 for poet running 
 
 	# time constants - 
@@ -548,7 +548,7 @@ pvec_initial = [
 	1.0         ;	# 38	    mRNA_Venus
     1.0         ;   # 39        mRNA_BFP
 
-    15.0          ;	# 40	    protein_GntR 
+    1.0          ;	# 40	    protein_GntR 
 	1.0         ;	# 41	    protein_S28
     1.0         ;   # 42	   protein_AS28-changed from 1 to 1.2 and 0.6 to 0.8
     1.0         ;	# 43	    protein_Venus Changed from 8,7 to 9.,9
@@ -588,7 +588,7 @@ RA = 0
 ##
 
 # execute -
-number_of_trials = 2
+number_of_trials = 5
 for trial_index = 1:number_of_trials
 
     global pV
@@ -606,11 +606,11 @@ for trial_index = 1:number_of_trials
         pV_best = PC[:,best_p_index]
 
         # local refine -
-        pV = local_refinement_step(path_to_data_dir, pV_best; iteration_max=35)
+        pV = local_refinement_step(path_to_data_dir, pV_best; iteration_max=30)
     end
 
     # main -
-    (EC,PC,RA) = main(path_to_data_dir, vec(pV); rank_cutoff=4,maximum_number_of_iterations=35)
+    (EC,PC,RA) = main(path_to_data_dir, vec(pV); rank_cutoff=4,maximum_number_of_iterations=30)
 
     # dump results to disk -
     fname = "./poets_ensemble_W_test/RA_T$(trial_index).dat"

@@ -70,11 +70,11 @@ function build_data_dictionary(time_span::Tuple{Float64,Float64,Float64}, path_t
 
 	# array of gene lengths -
 	gene_coding_length_array = [
-		996.0	;	# 1	GntR - Abhi Work 
-		730.0	;	# 2	S28 - From NCBI -FilA
-		298.0	;	# 3	AS28 From NCBI- FlgM
-		730.0   ;   # 4 Venus
-		730.0   ;   # 5 BFP
+		996.0	;	# 1	GntR
+		720.0	;	# 2	S28 
+		294.0	;	# 3	AS28 
+		717.0   ;   # 4 Venus
+		714.0   ;   # 5 BFP
 	]
 
 	# array of mRNA coding lengths -
@@ -141,7 +141,7 @@ function build_data_dictionary(time_span::Tuple{Float64,Float64,Float64}, path_t
 	binding_parameter_dictionary["K_GntR_mP70_Venus"]=0.05 
 	binding_parameter_dictionary["n_S28_RNAP_BFP"]=1 
 	binding_parameter_dictionary["K_S28_RNAP_BFP"]=2
-	binding_parameter_dictionary["Km_AS28_S28"]=0.047 #WAS 1 AND 50- place holder for Km
+	binding_parameter_dictionary["n_AS28_S28_BFP"]=1 #WAS 1 AND 50- place holder for Km
 	binding_parameter_dictionary["K_AS28_S28_BFP"]=0.209
 
 	
@@ -239,7 +239,7 @@ function build_data_dictionary(time_span::Tuple{Float64,Float64,Float64}, path_t
 		"K_GntR_mP70_Venus" ;#21
 		"n_S28_RNAP_BFP" ;#22
 		"K_S28_RNAP_BFP" ;#23
-		"Km_AS28_S28" ;#24
+		"n_AS28_S28_BFP" ;#24
 		"K_AS28_S28_BFP" ;#25
 		"n_gluconate_GntR" ;#26
 		"K_gluconate_GntR" ;#27
